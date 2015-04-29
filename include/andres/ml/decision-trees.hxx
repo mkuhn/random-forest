@@ -6,7 +6,7 @@
 ///
 /// Leo Breiman. Random Forests. Machine Learning 45(1):5-32, 2001.
 /// http://dx.doi.org/10.1023%2FA%3A1010933404324
-/// 
+///
 /// \section section_license License
 ///
 /// Copyright (c) 2013 by Steffen Kirchhoff and Bjoern Andres.
@@ -15,8 +15,8 @@
 /// Enquiries shall be directed to bjoern@andres.sc.
 ///
 /// All advertising materials mentioning features or use of this software must
-/// display the following acknowledgement: ``This product includes andres::ml 
-/// Decision Trees developed by Steffen Kirchhoff and Bjoern Andres. Please 
+/// display the following acknowledgement: ``This product includes andres::ml
+/// Decision Trees developed by Steffen Kirchhoff and Bjoern Andres. Please
 /// direct enquiries concerning andres::ml Decision Trees to bjoern@andres.sc''.
 ///
 /// Redistribution and use in source and binary forms, with or without
@@ -28,8 +28,8 @@
 /// this list of conditions and the following disclaimer in the documentation
 /// and/or other materials provided with the distribution.
 /// - All advertising materials mentioning features or use of this software must
-/// display the following acknowledgement: ``This product includes andres::ml 
-/// Decision Trees developed by Steffen Kirchhoff and Bjoern Andres. Please 
+/// display the following acknowledgement: ``This product includes andres::ml
+/// Decision Trees developed by Steffen Kirchhoff and Bjoern Andres. Please
 /// direct enquiries concerning andres::ml Decision Trees to bjoern@andres.sc''.
 /// - The names of the authors must not be used to endorse or promote products
 /// derived from this software without specific prior written permission.
@@ -44,7 +44,7 @@
 /// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
 /// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 /// ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-/// 
+///
 #pragma once
 #ifndef ANDRES_ML_DECISION_FOREST_HXX
 #define ANDRES_ML_DECISION_FOREST_HXX
@@ -61,7 +61,7 @@
 
 /// The public API.
 namespace andres {
-    
+
 /// Machine Learning.
 namespace ml {
 
@@ -84,7 +84,7 @@ public:
     Label label() const;
     Label& label();
     template<class RandomEngine>
-        size_t learn(const andres::View<Feature>&, const andres::View<Label>&, 
+        size_t learn(const andres::View<Feature>&, const andres::View<Label>&,
             std::vector<size_t>&, const size_t, const size_t, RandomEngine&);
 
 private:
@@ -102,8 +102,8 @@ private:
             {
                 assert(featureIndex < features.shape(1));
             }
-        bool operator()(const size_t j, const size_t k) const 
-            { 
+        bool operator()(const size_t j, const size_t k) const
+            {
                 assert(j < features_.shape(0));
                 assert(k < features_.shape(0));
                 return features_(j, featureIndex_) < features_(k, featureIndex_);
@@ -114,7 +114,7 @@ private:
     };
 
     template<class RandomEngine>
-        void sampleSubsetWithoutReplacement(const size_t, const size_t, 
+        void sampleSubsetWithoutReplacement(const size_t, const size_t,
             std::vector<size_t>&, RandomEngine&,
             std::vector<size_t>& = std::vector<size_t>()
         );
@@ -122,7 +122,7 @@ private:
     size_t featureIndex_;
     Feature threshold_;
     size_t childNodeIndices_[2]; // 0 means <, 1 means >=
-    Label label_; 
+    Label label_;
     bool isLeaf_;
 };
 
@@ -138,16 +138,16 @@ public:
     size_t size() const; // number of decision nodes
     void predict(const andres::View<Feature>&, std::vector<Label>&) const;
     const DecisionNodeType& decisionNode(const size_t) const;
-    void learn(const andres::View<Feature>&, const andres::View<Label>&, 
+    void learn(const andres::View<Feature>&, const andres::View<Label>&,
         std::vector<size_t>&);
     template<class RandomEngine>
-        void learn(const andres::View<Feature>&, const andres::View<Label>&, 
+        void learn(const andres::View<Feature>&, const andres::View<Label>&,
             std::vector<size_t>&, RandomEngine&);
 
-private:    
+private:
     struct TreeConstructionQueueEntry {
         TreeConstructionQueueEntry(
-            const size_t nodeIndex = 0, 
+            const size_t nodeIndex = 0,
             const size_t sampleIndexBegin = 0,
             const size_t sampleIndexEnd = 0,
             const size_t thresholdIndex = 0
@@ -169,8 +169,8 @@ private:
 
 /// A bag of decision trees.
 template<
-    class FEATURE = double, 
-    class LABEL = unsigned char, 
+    class FEATURE = double,
+    class LABEL = unsigned char,
     class PROBABILITY = double
 >
 class DecisionForest {
@@ -181,7 +181,7 @@ public:
     typedef DecisionTree<Feature, Label> DecisionTreeType;
 
     DecisionForest();
-    void clear();    
+    void clear();
     size_t size() const;
     const DecisionTreeType& decisionTree(const size_t) const;
     void predict(const andres::View<Feature>&, andres::Marray<Probability>&) const;
@@ -201,13 +201,13 @@ private:
 // implementation of DecisionNode
 
 /// Constructs a decision node.
-/// 
+///
 template<class FEATURE, class LABEL>
 inline
 DecisionNode<FEATURE, LABEL>::DecisionNode()
-:   featureIndex_(), 
-    threshold_(), 
-    label_(), 
+:   featureIndex_(),
+    threshold_(),
+    label_(),
     isLeaf_(false)
 {
     childNodeIndices_[0] = 0;
@@ -215,52 +215,52 @@ DecisionNode<FEATURE, LABEL>::DecisionNode()
 }
 
 /// Returns true if the node is a leaf node.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline bool 
+inline bool
 DecisionNode<FEATURE, LABEL>::isLeaf() const {
     return isLeaf_;
 }
 
 /// Returns true if the node is a leaf node.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline bool& 
+inline bool&
 DecisionNode<FEATURE, LABEL>::isLeaf() {
     return isLeaf_;
 }
 
 /// Returns, for a non-leaf node, the index of a feature wrt which a decision is made.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline size_t 
+inline size_t
 DecisionNode<FEATURE, LABEL>::featureIndex() const {
     assert(!isLeaf());
     return featureIndex_;
 }
 
 /// Returns, for a non-leaf node, the index of a feature wrt which a decision is made.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline size_t& 
+inline size_t&
 DecisionNode<FEATURE, LABEL>::featureIndex() {
     assert(!isLeaf());
     return featureIndex_;
 }
 
 /// Returns, for a non-leaf node, a threshold by which a decision is made.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline typename DecisionNode<FEATURE, LABEL>::Feature 
+inline typename DecisionNode<FEATURE, LABEL>::Feature
 DecisionNode<FEATURE, LABEL>::threshold() const {
     assert(!isLeaf());
     return threshold_;
 }
 
 /// Returns, for a non-leaf node, a threshold by which a decision is made.
-/// 
+///
 template<class FEATURE, class LABEL>
-inline typename DecisionNode<FEATURE, LABEL>::Feature& 
+inline typename DecisionNode<FEATURE, LABEL>::Feature&
 DecisionNode<FEATURE, LABEL>::threshold() {
     assert(!isLeaf());
     return threshold_;
@@ -269,9 +269,9 @@ DecisionNode<FEATURE, LABEL>::threshold() {
 /// Returns, for a non-leaf node, the index of one of its two child nodes.
 ///
 /// \param j number of the child node (either 0 or 1).
-/// 
+///
 template<class FEATURE, class LABEL>
-inline size_t 
+inline size_t
 DecisionNode<FEATURE, LABEL>::childNodeIndex(
     const size_t j
 ) const {
@@ -283,9 +283,9 @@ DecisionNode<FEATURE, LABEL>::childNodeIndex(
 /// Returns, for a non-leaf node, the index of one of its two child nodes.
 ///
 /// \param j number of the child node (either 0 or 1).
-/// 
+///
 template<class FEATURE, class LABEL>
-inline size_t& 
+inline size_t&
 DecisionNode<FEATURE, LABEL>::childNodeIndex(
     const size_t j
 ) {
@@ -306,7 +306,7 @@ DecisionNode<FEATURE, LABEL>::label() const {
 /// Returns, for a leaf node, its label.
 ///
 template<class FEATURE, class LABEL>
-inline typename DecisionNode<FEATURE, LABEL>::Label& 
+inline typename DecisionNode<FEATURE, LABEL>::Label&
 DecisionNode<FEATURE, LABEL>::label() {
     assert(isLeaf());
     return label_;
@@ -351,7 +351,7 @@ DecisionNode<FEATURE, LABEL>::learn(
         bool isLabelUnique = true;
         const size_t firstLabel = labels(sampleIndices[sampleIndexBegin]);
         for(size_t j = sampleIndexBegin + 1; j < sampleIndexEnd; ++j) {
-            if(labels(sampleIndices[j]) != firstLabel) { 
+            if(labels(sampleIndices[j]) != firstLabel) {
                 isLabelUnique = false;
                 break;
             }
@@ -363,9 +363,9 @@ DecisionNode<FEATURE, LABEL>::learn(
             return 0;
         }
     }
-    
+
     const size_t numberOfFeatures = features.shape(1);
-    const size_t numberOfFeaturesToBeAssessed = 
+    const size_t numberOfFeaturesToBeAssessed =
         static_cast<size_t>(
             std::ceil(std::sqrt(
                 static_cast<double>(numberOfFeatures)
@@ -374,16 +374,16 @@ DecisionNode<FEATURE, LABEL>::learn(
 
     std::vector<size_t> featureIndices(numberOfFeaturesToBeAssessed); // expensive!
     std::vector<size_t> buffer; // expensive!
-    
+
     sampleSubsetWithoutReplacement(
-        numberOfFeatures, 
-        numberOfFeaturesToBeAssessed, 
+        numberOfFeatures,
+        numberOfFeaturesToBeAssessed,
         featureIndices,
         randomEngine,
         buffer
     );
 
-    std::vector<size_t> numbersOfLabels[2]; 
+    std::vector<size_t> numbersOfLabels[2];
     numbersOfLabels[0].reserve(10); // expensive!
     numbersOfLabels[1].reserve(10); // expensive!
     double optimalSumOfGiniCoefficients = std::numeric_limits<double>::infinity();
@@ -395,8 +395,8 @@ DecisionNode<FEATURE, LABEL>::learn(
 
         // sort sample indices wrt fi-th feature
         std::sort(
-            sampleIndices.begin() + sampleIndexBegin, 
-            sampleIndices.begin() + sampleIndexEnd, 
+            sampleIndices.begin() + sampleIndexBegin,
+            sampleIndices.begin() + sampleIndexEnd,
             ComparisonByFeature(features, fi)
         );
         #ifndef NDEBUG
@@ -407,7 +407,7 @@ DecisionNode<FEATURE, LABEL>::learn(
         }
         #endif
 
-        // the variables "numbersOfElements" and "numbersOfLabels" are defined 
+        // the variables "numbersOfElements" and "numbersOfLabels" are defined
         // for two sets:
         // [0] all samples with indices {sampleIndexBegin, ..., thresholdIndex - 1}
         // [1] all samples with indices {thresholdIndex, ..., sampleIndexEnd}
@@ -415,7 +415,7 @@ DecisionNode<FEATURE, LABEL>::learn(
 
         // numbers of elements
         size_t numbersOfElements[] = {0, sampleIndexEnd - sampleIndexBegin};
-        
+
         // numbers of labels
         for(size_t k = sampleIndexBegin; k < sampleIndexEnd; ++k) {
             const Label label = labels(sampleIndices[k]);
@@ -430,13 +430,13 @@ DecisionNode<FEATURE, LABEL>::learn(
 
         // assess all relevant splits wrt fi-th feature
         size_t thresholdIndex = sampleIndexBegin;
-        for(;;) { 
+        for(;;) {
             const size_t thresholdIndexOld = thresholdIndex;
 
             // skip samples with identical feature value
             while(thresholdIndex + 1 < sampleIndexEnd
-            && features(sampleIndices[thresholdIndex], fi) 
-            == features(sampleIndices[thresholdIndex + 1], fi)) {                
+            && features(sampleIndices[thresholdIndex], fi)
+            == features(sampleIndices[thresholdIndex + 1], fi)) {
                 const size_t label = labels(sampleIndices[thresholdIndex]);
                 ++numbersOfElements[0];
                 --numbersOfElements[1];
@@ -453,7 +453,7 @@ DecisionNode<FEATURE, LABEL>::learn(
                 ++numbersOfLabels[0][label];
                 --numbersOfLabels[1][label];
             }
-            ++thresholdIndex; 
+            ++thresholdIndex;
             if(thresholdIndex == sampleIndexEnd) {
                 break;
             }
@@ -464,7 +464,7 @@ DecisionNode<FEATURE, LABEL>::learn(
             for(size_t s = 0; s < 2; ++s) // set 0 and 1
             for(size_t k = 0; k < numbersOfLabels[s].size(); ++k)
             for(size_t m = k + 1; m < numbersOfLabels[s].size(); ++m) {
-                numbersOfDistinctPairs[s] += 
+                numbersOfDistinctPairs[s] +=
                     numbersOfLabels[s][k] * numbersOfLabels[s][m];
             }
 
@@ -475,7 +475,7 @@ DecisionNode<FEATURE, LABEL>::learn(
                     giniCoefficients[s] = 0;
                 }
                 else {
-                    giniCoefficients[s] = 
+                    giniCoefficients[s] =
                         static_cast<double>(numbersOfDistinctPairs[s])
                         / (numbersOfElements[s] * (numbersOfElements[s] - 1));
                 }
@@ -491,7 +491,7 @@ DecisionNode<FEATURE, LABEL>::learn(
             if(sumOfginiCoefficients < optimalSumOfGiniCoefficients) {
                 optimalSumOfGiniCoefficients = sumOfginiCoefficients;
                 optimalFeatureIndex = fi;
-                optimalThreshold = features(sampleIndices[thresholdIndex], fi); 
+                optimalThreshold = features(sampleIndices[thresholdIndex], fi);
                 optimalThresholdIndex = thresholdIndex;
                 // std::cout << ", new optimum";
             }
@@ -506,17 +506,17 @@ DecisionNode<FEATURE, LABEL>::learn(
 
     // sort data wrt optimal feature
     std::sort(
-        sampleIndices.begin() + sampleIndexBegin, 
-        sampleIndices.begin() + sampleIndexEnd, 
+        sampleIndices.begin() + sampleIndexBegin,
+        sampleIndices.begin() + sampleIndexEnd,
         ComparisonByFeature(features, optimalFeatureIndex)
     );
-    
+
     return optimalThresholdIndex;
 }
 
 template<class FEATURE, class LABEL>
 template<class RandomEngine>
-inline void 
+inline void
 DecisionNode<FEATURE, LABEL>::sampleSubsetWithoutReplacement(
     const size_t size,
     const size_t subsetSize,
@@ -565,7 +565,7 @@ DecisionTree<FEATURE, LABEL>::DecisionTree()
 /// \param sampleIndices A sequence of indices of samples to be considered for learning. This vector is used by the function as a scratch-pad for sorting.
 ///
 template<class FEATURE, class LABEL>
-inline void 
+inline void
 DecisionTree<FEATURE, LABEL>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
@@ -584,7 +584,7 @@ DecisionTree<FEATURE, LABEL>::learn(
 ///
 template<class FEATURE, class LABEL>
 template<class RandomEngine>
-void 
+void
 DecisionTree<FEATURE, LABEL>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
@@ -592,24 +592,24 @@ DecisionTree<FEATURE, LABEL>::learn(
     RandomEngine& randomEngine
 ) {
     assert(decisionNodes_.size() == 0);
-   
+
     std::queue<TreeConstructionQueueEntry> queue;
     // learn root node
     {
         decisionNodes_.push_back(DecisionNodeType());
         size_t thresholdIndex = decisionNodes_.back().learn(
-            features, 
-            labels, 
-            sampleIndices, 
+            features,
+            labels,
+            sampleIndices,
             0, sampleIndices.size(),
             randomEngine
-        );        
+        );
         if(!decisionNodes_[0].isLeaf()) { // if root node is not pure
             queue.push(
                 TreeConstructionQueueEntry(
                     0, // node index
                     0, sampleIndices.size(), // range of samples
-                    thresholdIndex 
+                    thresholdIndex
                 )
             );
         }
@@ -628,8 +628,8 @@ DecisionTree<FEATURE, LABEL>::learn(
         nodeIndexNew = decisionNodes_.size();
         decisionNodes_.push_back(DecisionNodeType());
         thresholdIndexNew = decisionNodes_.back().learn(
-            features, 
-            labels, 
+            features,
+            labels,
             sampleIndices,
             sampleIndexBegin, thresholdIndex,
             randomEngine
@@ -660,8 +660,8 @@ DecisionTree<FEATURE, LABEL>::learn(
         nodeIndexNew = decisionNodes_.size();
         decisionNodes_.push_back(DecisionNodeType());
         thresholdIndexNew = decisionNodes_.back().learn(
-            features, 
-            labels, 
+            features,
+            labels,
             sampleIndices,
             thresholdIndex, sampleIndexEnd,
             randomEngine
@@ -693,7 +693,7 @@ DecisionTree<FEATURE, LABEL>::learn(
 /// Returns the number of decision nodes.
 ///
 template<class FEATURE, class LABEL>
-inline size_t 
+inline size_t
 DecisionTree<FEATURE, LABEL>::size() const {
     return decisionNodes_.size();
 }
@@ -701,7 +701,7 @@ DecisionTree<FEATURE, LABEL>::size() const {
 /// Returns a decision node.
 ///
 template<class FEATURE, class LABEL>
-inline const typename DecisionTree<FEATURE, LABEL>::DecisionNodeType& 
+inline const typename DecisionTree<FEATURE, LABEL>::DecisionNodeType&
 DecisionTree<FEATURE, LABEL>::decisionNode(
     const size_t decisionNodeIndex
 ) const {
@@ -714,7 +714,7 @@ DecisionTree<FEATURE, LABEL>::decisionNode(
 /// \param labels A vector of labels, one for each sample. (output)
 ///
 template<class FEATURE, class LABEL>
-inline void 
+inline void
 DecisionTree<FEATURE, LABEL>::predict(
     const andres::View<Feature>& features,
     std::vector<Label>& labels
@@ -779,7 +779,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::size() const {
 /// \param numberOfDecisionTrees Number of decision trees to be learned.
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
-inline void 
+inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
@@ -799,7 +799,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
 template<class RandomEngine>
-inline void 
+inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
@@ -834,10 +834,10 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
 /// \param labelProbabilities A matrix of probabilities in which every rows corresponds to a sample and every column corresponds to a label.
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
-inline void 
+inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::predict(
     const andres::View<Feature>& features,
-    andres::Marray<Probability>& labelProbabilities 
+    andres::Marray<Probability>& labelProbabilities
 ) const  {
     if(size() == 0) {
         throw std::runtime_error("no decision trees.");
@@ -877,7 +877,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::predict(
 /// \param treeIndex Index of the decision tree.
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
-inline const typename DecisionForest<FEATURE, LABEL, PROBABILITY>::DecisionTreeType& 
+inline const typename DecisionForest<FEATURE, LABEL, PROBABILITY>::DecisionTreeType&
 DecisionForest<FEATURE, LABEL, PROBABILITY>::decisionTree(
     const size_t treeIndex
 ) const {
@@ -887,13 +887,13 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::decisionTree(
 // draw "size" out of "size", with replacement
 template<class FEATURE, class LABEL, class PROBABILITY>
 template<class RandomEngine>
-inline void 
+inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::sampleBootstrap(
     const size_t size,
     std::vector<size_t>& indices,
     RandomEngine& randomEngine
 ) {
-    indices.resize(size);    
+    indices.resize(size);
     #pragma omp critical
     for(size_t j = 0; j < size; ++j) {
         std::uniform_int_distribution<size_t> distribution(0, size - 1);

@@ -4,18 +4,18 @@
 /// Copyright (c) 2011 by Bjoern Andres (bjoern@andres.sc).
 ///
 /// \section section_abstract Short Description
-/// Marray is a single header file for fast multi-dimensional arrays and views 
-/// in C++. Unlike in other implementations such as boost MultiArray and 
-/// Blitz++, the dimension of Marray views and arrays can be set and changed at 
-/// runtime. Dimension is not a template parameter in Marray. Arrays and views 
-/// that have the same type of entries but different dimension are therefore of 
-/// the same C++ type (class). In conjunction with the comprehensive and 
-/// convenient Marray interface, this brings some of the flexibility known from 
+/// Marray is a single header file for fast multi-dimensional arrays and views
+/// in C++. Unlike in other implementations such as boost MultiArray and
+/// Blitz++, the dimension of Marray views and arrays can be set and changed at
+/// runtime. Dimension is not a template parameter in Marray. Arrays and views
+/// that have the same type of entries but different dimension are therefore of
+/// the same C++ type (class). In conjunction with the comprehensive and
+/// convenient Marray interface, this brings some of the flexibility known from
 /// high-level languages such as Python and MATLAB to C++.
 ///
 /// \section section_features Features
-/// - Multi-dimensional arrays and views whose dimension, shape, size and 
-///   indexing order (first or last coordinate major order) can be set and 
+/// - Multi-dimensional arrays and views whose dimension, shape, size and
+///   indexing order (first or last coordinate major order) can be set and
 ///   changed at runtime
 /// - Derived classes for matrices and vectors
 /// - Access to entries via coordinates, scalar indices and STL-compliant
@@ -25,7 +25,7 @@
 /// - Simple HDF5 inferface to load, save and exchange multi-dimensional data
 ///   (see namespace marray::hdf5 in header include/marray/marray_hdf5.hxx)
 /// - MIT License for worry-free use and distribution
-/// 
+///
 /// \section section_tutorial Tutorial
 /// - An introductory tutorial can be found at src/tutorial/marray.cxx
 ///
@@ -35,45 +35,45 @@
 ///   - HAVE_CPP0X_VARIADIC_TEMPLATES
 ///   - HAVE_CPP0X_INITIALIZER_LISTS
 ///   .
-/// 
+///
 /// \section section_license License
 ///
 /// Copyright (c) 2011-2013 by Bjoern Andres.
-/// 
+///
 /// This software was developed by Bjoern Andres.
 /// Enquiries shall be directed to bjoern@andres.sc.
 ///
 /// All advertising materials mentioning features or use of this software must
-/// display the following acknowledgement: ``This product includes 
-/// andres::marray developed by Bjoern Andres. Please direct enquiries 
+/// display the following acknowledgement: ``This product includes
+/// andres::marray developed by Bjoern Andres. Please direct enquiries
 /// concerning andres::marray to bjoern@andres.sc''.
 ///
-/// Redistribution and use in source and binary forms, with or without 
+/// Redistribution and use in source and binary forms, with or without
 /// modification, are permitted provided that the following conditions are met:
 ///
 /// - Redistributions of source code must retain the above copyright notice,
 ///   this list of conditions and the following disclaimer.
-/// - Redistributions in binary form must reproduce the above copyright notice, 
+/// - Redistributions in binary form must reproduce the above copyright notice,
 ///   this list of conditions and the following disclaimer in the documentation
 ///   and/or other materials provided with the distribution.
-/// - All advertising materials mentioning features or use of this software must 
-///   display the following acknowledgement: ``This product includes 
-///   andres::marray developed by Bjoern Andres. Please direct enquiries 
+/// - All advertising materials mentioning features or use of this software must
+///   display the following acknowledgement: ``This product includes
+///   andres::marray developed by Bjoern Andres. Please direct enquiries
 ///   concerning andres::marray to bjoern@andres.sc''.
-/// - The name of the author must not be used to endorse or promote products 
+/// - The name of the author must not be used to endorse or promote products
 ///   derived from this software without specific prior written permission.
 ///
-/// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED 
-/// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF 
-/// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO 
+/// THIS SOFTWARE IS PROVIDED BY THE AUTHOR ``AS IS'' AND ANY EXPRESS OR IMPLIED
+/// WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+/// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO
 /// EVENT SHALL THE AUTHOR BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
 /// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-/// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; 
-/// OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, 
-/// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR 
-/// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF 
+/// PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS;
+/// OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY,
+/// WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR
+/// OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF
 /// ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-/// 
+///
 #pragma once
 #ifndef MARRAY_HXX
 #define MARRAY_HXX
@@ -104,24 +104,24 @@ static const bool Mutable = false; ///< Flag to be used with the template parame
 static const CoordinateOrder defaultOrder = LastMajorOrder; ///< Default order of coordinate tuples.
 static const InitializationSkipping SkipInitialization = InitializationSkipping(); ///< Flag to indicate initialization skipping.
 
-template<class E, class T> 
+template<class E, class T>
     class ViewExpression;
 // \cond suppress doxygen
-template<class E, class T, class UnaryFunctor> 
+template<class E, class T, class UnaryFunctor>
     class UnaryViewExpression;
-template<class E1, class T1, class E2, class T2, class BinaryFunctor> 
+template<class E1, class T1, class E2, class T2, class BinaryFunctor>
     class BinaryViewExpression;
-template<class E, class T, class S, class BinaryFunctor> 
+template<class E, class T, class S, class BinaryFunctor>
     class BinaryViewExpressionScalarFirst;
-template<class E, class T, class S, class BinaryFunctor> 
+template<class E, class T, class S, class BinaryFunctor>
     class BinaryViewExpressionScalarSecond;
 // \endcond suppress doxygen
-template<class T, bool isConst = false, class A = std::allocator<size_t> > 
+template<class T, bool isConst = false, class A = std::allocator<size_t> >
     class View;
 #ifdef HAVE_CPP0X_TEMPLATE_ALIASES
     template<class T, class A> using ConstView = View<T, true, A>;
 #endif
-template<class T, bool isConst, class A = std::allocator<size_t> > 
+template<class T, bool isConst, class A = std::allocator<size_t> >
     class Iterator;
 template<class T, class A = std::allocator<size_t> > class Vector;
 template<class T, class A = std::allocator<size_t> > class Matrix;
@@ -157,27 +157,27 @@ namespace marray_detail {
 
     template<class T> struct TypeTraits
         { static const unsigned char position = 255; };
-    template<> struct TypeTraits<char> 
+    template<> struct TypeTraits<char>
         { static const unsigned char position = 0; };
-    template<> struct TypeTraits<unsigned char> 
+    template<> struct TypeTraits<unsigned char>
         { static const unsigned char position = 1; };
-    template<> struct TypeTraits<short> 
+    template<> struct TypeTraits<short>
         { static const unsigned char position = 2; };
-    template<> struct TypeTraits<unsigned short> 
+    template<> struct TypeTraits<unsigned short>
         { static const unsigned char position = 3; };
-    template<> struct TypeTraits<int> 
+    template<> struct TypeTraits<int>
         { static const unsigned char position = 4; };
-    template<> struct TypeTraits<unsigned int> 
+    template<> struct TypeTraits<unsigned int>
         { static const unsigned char position = 5; };
-    template<> struct TypeTraits<long> 
+    template<> struct TypeTraits<long>
         { static const unsigned char position = 6; };
-    template<> struct TypeTraits<unsigned long> 
+    template<> struct TypeTraits<unsigned long>
         { static const unsigned char position = 7; };
-    template<> struct TypeTraits<float> 
+    template<> struct TypeTraits<float>
         { static const unsigned char position = 8; };
-    template<> struct TypeTraits<double> 
+    template<> struct TypeTraits<double>
         { static const unsigned char position = 9; };
-    template<> struct TypeTraits<long double> 
+    template<> struct TypeTraits<long double>
         { static const unsigned char position = 10; };
     template<class A, class B> struct PromoteType
         { typedef typename IfBool<TypeTraits<A>::position >= TypeTraits<B>::position, A, B>::type type; };
@@ -203,17 +203,17 @@ namespace marray_detail {
     template<class Functor, class T1, class A, class E, class T2>
         inline void operate(View<T1, false, A>& v, const ViewExpression<E, T2>& expression, Functor f);
 
-    // helper classes 
+    // helper classes
     template<unsigned short N, class Functor, class T, class A>
         struct OperateHelperUnary;
     template<unsigned short N, class Functor, class T1, class T2, class A>
         struct OperateHelperBinaryScalar;
-    template<unsigned short N, class Functor, class T1, class T2, 
+    template<unsigned short N, class Functor, class T1, class T2,
              bool isConst, class A1, class A2>
         struct OperateHelperBinary;
-    template<bool isConstTo, class TFrom, class TTo, class AFrom, class ATo> 
+    template<bool isConstTo, class TFrom, class TTo, class AFrom, class ATo>
         struct AssignmentOperatorHelper;
-    template<bool isIntegral> 
+    template<bool isIntegral>
         struct AccessOperatorHelper;
 
     // unary in-place functors
@@ -255,13 +255,13 @@ namespace marray_detail {
         struct DividedBy { U operator()(const T1& x, const T2& y) const { return x / y; } };
 }
 // \endcond suppress doxygen
-   
+
 /// Array-Interface to an interval of memory.
 ///
-/// A view makes a subset of memory look as if it was stored in an 
-/// Marray. With the help of a view, data in a subset of memory can 
+/// A view makes a subset of memory look as if it was stored in an
+/// Marray. With the help of a view, data in a subset of memory can
 /// be accessed and manipulated conveniently. In contrast to arrays
-/// which allocate and de-allocate their own memory, views only 
+/// which allocate and de-allocate their own memory, views only
 /// reference memory that has been allocated by other means.
 /// Perhaps the simplest and most important use of views is to
 /// read and manipulate sub-arrays.
@@ -269,13 +269,13 @@ namespace marray_detail {
 /// Notes on arithmetic operators of View:
 /// - Only the pre-fix operators ++ and -- and not the corresponding post-fix
 ///   operators are implemented for View because the return value of the
-///   post-fix operators would have to be the View as it is prior to the 
-///   operator call. However, the data under the view cannot be preserved when 
+///   post-fix operators would have to be the View as it is prior to the
+///   operator call. However, the data under the view cannot be preserved when
 ///   incrementing or decrementing. Some compilers might accept the post-fix
 ///   operators, use the pre-fix implementation implicitly and issue a warning.
 ///
-template<class T, bool isConst, class A> 
-class View 
+template<class T, bool isConst, class A>
+class View
 : public ViewExpression<View<T, isConst, A>, T>
 {
 public:
@@ -293,7 +293,7 @@ public:
 
     // construction
     View(const allocator_type& = allocator_type());
-    View(pointer, const allocator_type& = allocator_type()); 
+    View(pointer, const allocator_type& = allocator_type());
     View(const View<T, false, A>&);
     template<class ShapeIterator>
         View(ShapeIterator, ShapeIterator, pointer,
@@ -302,7 +302,7 @@ public:
             const allocator_type& = allocator_type());
     template<class ShapeIterator, class StrideIterator>
         View(ShapeIterator, ShapeIterator, StrideIterator,
-            pointer, const CoordinateOrder&, 
+            pointer, const CoordinateOrder&,
             const allocator_type& = allocator_type());
     #ifdef HAVE_CPP0X_INITIALIZER_LISTS
         View(std::initializer_list<size_t>, pointer,
@@ -310,18 +310,18 @@ public:
             const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
         View(std::initializer_list<size_t>, std::initializer_list<size_t>,
-            pointer, const CoordinateOrder&, 
+            pointer, const CoordinateOrder&,
             const allocator_type& = allocator_type());
     #endif
-    
+
     // assignment
     View<T, isConst, A>& operator=(const T&);
     View<T, isConst, A>& operator=(const View<T, true, A>&); // over-write default
     View<T, isConst, A>& operator=(const View<T, false, A>&); // over-write default
     template<class TLocal, bool isConstLocal, class ALocal>
-        View<T, isConst, A>& operator=(const View<TLocal, isConstLocal, ALocal>&); 
+        View<T, isConst, A>& operator=(const View<TLocal, isConstLocal, ALocal>&);
     template<class E, class Te>
-        View<T, isConst, A>& 
+        View<T, isConst, A>&
         operator=(const ViewExpression<E, Te>&);
 
     void assign(const allocator_type& = allocator_type());
@@ -332,19 +332,19 @@ public:
             const allocator_type& = allocator_type());
     template<class ShapeIterator, class StrideIterator>
         void assign(ShapeIterator, ShapeIterator, StrideIterator,
-            pointer, const CoordinateOrder&, 
+            pointer, const CoordinateOrder&,
             const allocator_type& = allocator_type());
     #ifdef HAVE_CPP0X_INITIALIZER_LISTS
         void assign(std::initializer_list<size_t>, pointer,
             const CoordinateOrder& = defaultOrder,
             const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
-        void assign(std::initializer_list<size_t>, 
+        void assign(std::initializer_list<size_t>,
             std::initializer_list<size_t>, pointer,
-            const CoordinateOrder&, 
+            const CoordinateOrder&,
             const allocator_type& = allocator_type());
     #endif
-        
+
     // query
     const size_t dimension() const;
     const size_t size() const;
@@ -355,31 +355,31 @@ public:
     const size_t* stridesBegin() const;
     const size_t* stridesEnd() const;
     const CoordinateOrder& coordinateOrder() const;
-    const bool isSimple() const; 
-    template<class TLocal, bool isConstLocal, class ALocal> 
+    const bool isSimple() const;
+    template<class TLocal, bool isConstLocal, class ALocal>
         bool overlaps(const View<TLocal, isConstLocal, ALocal>&) const;
 
     // element access
-    template<class U> reference operator()(U); 
-    template<class U> reference operator()(U) const; 
+    template<class U> reference operator()(U);
+    template<class U> reference operator()(U) const;
     #ifndef HAVE_CPP0X_VARIADIC_TEMPLATES
         reference operator()(const size_t, const size_t);
         reference operator()(const size_t, const size_t) const;
         reference operator()(const size_t, const size_t, const size_t);
         reference operator()(const size_t, const size_t, const size_t) const;
-        reference operator()(const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
             const size_t);
-        reference operator()(const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
             const size_t) const;
-        reference operator()(const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
              const size_t, const size_t);
-        reference operator()(const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
             const size_t, const size_t) const;
-        reference operator()(const size_t, const size_t, const size_t, 
-            const size_t, const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
+            const size_t, const size_t, const size_t, const size_t,
             const size_t, const size_t, const size_t);
-        reference operator()(const size_t, const size_t, const size_t, 
-            const size_t, const size_t, const size_t, const size_t, 
+        reference operator()(const size_t, const size_t, const size_t,
+            const size_t, const size_t, const size_t, const size_t,
             const size_t, const size_t, const size_t) const;
     #else
         reference operator()(const size_t);
@@ -395,7 +395,7 @@ public:
                 size_t elementAccessHelper(const size_t, const size_t,
                     const Args...);
             template<typename... Args>
-                size_t elementAccessHelper(const size_t, const size_t, 
+                size_t elementAccessHelper(const size_t, const size_t,
                     const Args...) const;
         public:
     #endif
@@ -419,7 +419,7 @@ public:
     template<class BaseIterator, class ShapeIterator>
         View<T, true, A> constView(BaseIterator, ShapeIterator) const;
     template<class BaseIterator, class ShapeIterator>
-        View<T, true, A> constView(BaseIterator, ShapeIterator, 
+        View<T, true, A> constView(BaseIterator, ShapeIterator,
             const CoordinateOrder&) const;
     #ifdef HAVE_CPP0X_INITIALIZER_LISTS
         void view(std::initializer_list<size_t>,
@@ -488,15 +488,15 @@ public:
     #endif
 
     // output as string
-    std::string asString(const StringStyle& = MatrixStyle) const; 
+    std::string asString(const StringStyle& = MatrixStyle) const;
 
 private:
     typedef typename marray_detail::Geometry<A> geometry_type;
 
-    View(pointer, const geometry_type&); 
+    View(pointer, const geometry_type&);
 
     void updateSimplicity();
-    void testInvariant() const; 
+    void testInvariant() const;
 
     // unsafe direct memory access
     const T& operator[](const size_t) const;
@@ -515,20 +515,20 @@ template<class TLocal, class ALocal>
 template<class TLocal, class ALocal>
     friend class Matrix;
 // \cond suppress doxygen
-template<bool isConstTo, class TFrom, class TTo, class AFrom, class ATo> 
+template<bool isConstTo, class TFrom, class TTo, class AFrom, class ATo>
     friend struct marray_detail::AssignmentOperatorHelper;
 friend struct marray_detail::AccessOperatorHelper<true>;
 friend struct marray_detail::AccessOperatorHelper<false>;
 
-template<class E, class U> 
+template<class E, class U>
     friend class ViewExpression;
-template<class E, class U, class UnaryFunctor> 
+template<class E, class U, class UnaryFunctor>
     friend class UnaryViewExpression;
-template<class E1, class T1, class E2, class T2, class BinaryFunctor> 
+template<class E1, class T1, class E2, class T2, class BinaryFunctor>
     friend class BinaryViewExpression;
-template<class E, class U, class S, class BinaryFunctor> 
+template<class E, class U, class S, class BinaryFunctor>
     friend class BinaryViewExpressionScalarFirst;
-template<class E, class U, class S, class BinaryFunctor> 
+template<class E, class U, class S, class BinaryFunctor>
     friend class BinaryViewExpressionScalarSecond;
 
 template<class Functor, class T1, class Alocal, class E, class T2>
@@ -537,7 +537,7 @@ template<class Functor, class T1, class Alocal, class E, class T2>
 };
 
 /// STL-compliant random access iterator for View and Marray.
-/// 
+///
 /// In addition to the STL iterator interface, the member functions
 /// hasMore(), index(), and coordinate() are defined.
 ///
@@ -564,8 +564,8 @@ public:
 
     // construction
     Iterator();
-    Iterator(const View<T, false, A>&, const size_t = 0); 
-    Iterator(View<T, false, A>&, const size_t = 0); 
+    Iterator(const View<T, false, A>&, const size_t = 0);
+    Iterator(View<T, false, A>&, const size_t = 0);
     Iterator(const View<T, true, A>&, const size_t = 0);
     Iterator(const Iterator<T, false, A>&);
         // conversion from mutable to const
@@ -599,7 +599,7 @@ public:
         bool operator>=(const Iterator<T, isConstLocal, A>&) const;
 
     // operations beyond the STL standard
-    bool hasMore() const; 
+    bool hasMore() const;
     size_t index() const;
     template<class CoordinateIterator>
         void coordinate(CoordinateIterator) const;
@@ -608,7 +608,7 @@ private:
     void testInvariant() const;
 
     // attributes
-    view_pointer view_; 
+    view_pointer view_;
     pointer pointer_;
     size_t index_;
     std::vector<size_t> coordinates_;
@@ -618,7 +618,7 @@ friend class Iterator<T, !isConst, A>; // for comparison operators
 };
 
 /// Runtime-Flexible multi-dimensional array.
-template<class T, class A> 
+template<class T, class A>
 class Marray
 : public View<T, false, A>
 {
@@ -637,19 +637,19 @@ public:
 
     // constructors and destructor
     Marray(const allocator_type& = allocator_type());
-    Marray(const T&, const CoordinateOrder& = defaultOrder, 
+    Marray(const T&, const CoordinateOrder& = defaultOrder,
         const allocator_type& = allocator_type());
     template<class ShapeIterator>
         Marray(ShapeIterator, ShapeIterator, const T& = T(),
-            const CoordinateOrder& = defaultOrder, 
+            const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
     template<class ShapeIterator>
         Marray(const InitializationSkipping&, ShapeIterator, ShapeIterator,
-            const CoordinateOrder& = defaultOrder, 
+            const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
     #ifdef HAVE_CPP0X_INITIALIZER_LISTS
         Marray(std::initializer_list<size_t>, const T& = T(),
-            const CoordinateOrder& = defaultOrder, 
+            const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
     #endif
     Marray(const Marray<T, A>&);
@@ -659,7 +659,7 @@ public:
     template<class TLocal, bool isConstLocal, class ALocal>
         Marray(const View<TLocal, isConstLocal, ALocal>&);
     ~Marray();
-    
+
     // assignment
     Marray<T, A>& operator=(const T&);
     Marray<T, A>& operator=(const Marray<T, A>&); // over-write default
@@ -682,7 +682,7 @@ public:
 private:
     typedef typename base::geometry_type geometry_type;
 
-    void testInvariant() const; 
+    void testInvariant() const;
     template<bool SKIP_INITIALIZATION, class ShapeIterator>
         void resizeHelper(ShapeIterator, ShapeIterator, const T& = T());
 
@@ -693,7 +693,7 @@ friend class Matrix<T, A>;
 };
 
 /// One-dimensional Marray.
-template<class T, class A> 
+template<class T, class A>
 class Vector
 : public Marray<T, A>
 {
@@ -714,7 +714,7 @@ public:
     Vector(const allocator_type& = allocator_type());
     template<class TLocal, bool isConstLocal, class ALocal>
         Vector(const View<TLocal, isConstLocal, ALocal>&);
-    Vector(const size_t, const T& = T(), 
+    Vector(const size_t, const T& = T(),
         const allocator_type& = allocator_type());
     Vector(const InitializationSkipping&, const size_t,
         const allocator_type& = allocator_type());
@@ -748,7 +748,7 @@ private:
 };
 
 /// Two-dimensional Marray.
-template<class T, class A> 
+template<class T, class A>
 class Matrix
 : public Marray<T, A>
 {
@@ -774,7 +774,7 @@ public:
     Matrix(const size_t, const size_t, const T& = T(),
         const CoordinateOrder& = defaultOrder,
         const allocator_type& = allocator_type());
-    Matrix(const InitializationSkipping&, 
+    Matrix(const InitializationSkipping&,
         const size_t, const size_t,
         const CoordinateOrder& = defaultOrder,
         const allocator_type& = allocator_type());
@@ -815,7 +815,7 @@ View<T, isConst, A>::coordinatesToIndex
 (
     std::initializer_list<size_t> coordinate,
     size_t& out
-) const 
+) const
 {
     coordinatesToIndex(coordinate.begin(), out);
 }
@@ -827,9 +827,9 @@ View<T, isConst, A>::coordinatesToIndex
 /// \param out Index (output)
 /// \sa coordinatesToOffset(), indexToCoordinates(), and indexToOffset()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class CoordinateIterator>
-inline void 
+inline void
 View<T, isConst, A>::coordinatesToIndex
 (
     CoordinateIterator it,
@@ -851,7 +851,7 @@ View<T, isConst, A>::coordinatesToIndex
 /// \param out Index (output)
 /// \sa coordinatesToIndex(), indexToCoordinates(), and indexToOffset()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::coordinatesToOffset
 (
@@ -869,7 +869,7 @@ View<T, isConst, A>::coordinatesToOffset
 /// \param out Index (output)
 /// \sa coordinatesToIndex(), indexToCoordinates(), and indexToOffset()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class CoordinateIterator>
 inline void
 View<T, isConst, A>::coordinatesToOffset
@@ -934,7 +934,7 @@ View<T, isConst, A>::indexToCoordinates
 /// \param out Offset (output).
 /// \sa coordinatesToIndex(), coordinatesToOffset(), and indexToCoordinates()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::indexToOffset
 (
@@ -943,7 +943,7 @@ View<T, isConst, A>::indexToOffset
 ) const
 {
     testInvariant();
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || index < this->size()); 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST || index < this->size());
     if(isSimple()) {
         out = index;
     }
@@ -984,7 +984,7 @@ View<T, isConst, A>::indexToOffset
 ///
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline
 View<T, isConst, A>::View
 (
@@ -997,14 +997,14 @@ View<T, isConst, A>::View
 }
 
 // private constructor
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline
 View<T, isConst, A>::View
 (
     pointer data,
     const geometry_type& geometry
 )
-: data_(data), 
+: data_(data),
   geometry_(geometry)
 {
     testInvariant();
@@ -1015,7 +1015,7 @@ View<T, isConst, A>::View
 /// \param data Pointer to data.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline
 View<T, isConst, A>::View
 (
@@ -1032,7 +1032,7 @@ View<T, isConst, A>::View
 ///
 /// \param in View on mutable data.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline
 View<T, isConst, A>::View
 (
@@ -1045,7 +1045,7 @@ View<T, isConst, A>::View
 }
 
 /// Construct unstrided View
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that
 /// defines the shape.
 /// \param end Iterator to the end of this sequence.
@@ -1057,7 +1057,7 @@ View<T, isConst, A>::View
 /// \param allocator Allocator.
 ///
 
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator>
 inline
 View<T, isConst, A>::View
@@ -1068,16 +1068,16 @@ View<T, isConst, A>::View
     const CoordinateOrder& externalCoordinateOrder,
     const CoordinateOrder& internalCoordinateOrder,
     const allocator_type& allocator
-) 
+)
 :   data_(data),
-    geometry_(begin, end, externalCoordinateOrder, 
+    geometry_(begin, end, externalCoordinateOrder,
         internalCoordinateOrder, allocator)
 {
     testInvariant();
 }
 
 /// Construct strided View
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that
 /// defines the shape.
 /// \param end Iterator to the end of this sequence.
@@ -1088,7 +1088,7 @@ View<T, isConst, A>::View
 /// of coordinates used for scalar indexing and iterators.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator, class StrideIterator>
 inline
 View<T, isConst, A>::View
@@ -1101,14 +1101,14 @@ View<T, isConst, A>::View
     const allocator_type& allocator
 )
 : data_(data),
-  geometry_(begin, end, it, internalCoordinateOrder, allocator)  
+  geometry_(begin, end, it, internalCoordinateOrder, allocator)
 {
     testInvariant();
 }
 
 #ifdef HAVE_CPP0X_INITIALIZER_LISTS
 /// Construct unstrided View
-/// 
+///
 /// \param shape Shape initializer list.
 /// \param data Pointer to data.
 /// \param externalCoordinateOrder Flag specifying the order
@@ -1128,21 +1128,21 @@ View<T, isConst, A>::View
     const allocator_type& allocator
 )
 :   data_(data),
-    geometry_(shape.begin(), shape.end(), externalCoordinateOrder, 
-              internalCoordinateOrder, allocator)  
+    geometry_(shape.begin(), shape.end(), externalCoordinateOrder,
+              internalCoordinateOrder, allocator)
 {
     testInvariant();
 }
 
 /// Construct strided View
-/// 
+///
 /// \param shape Shape initializer list.
 /// \param strides Strides initializer list.
 /// \param data Pointer to data.
 /// \param internalCoordinateOrder Flag specifying the order
 /// of coordinates used for scalar indexing and iterators.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline
 View<T, isConst, A>::View
 (
@@ -1153,7 +1153,7 @@ View<T, isConst, A>::View
     const allocator_type& allocator
 )
 :   data_(data),
-    geometry_(shape.begin(), shape.end(), strides.begin(), 
+    geometry_(shape.begin(), shape.end(), strides.begin(),
               internalCoordinateOrder, allocator)
 {
     testInvariant();
@@ -1167,7 +1167,7 @@ View<T, isConst, A>::View
 ///
 /// \sa View()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::assign
 (
@@ -1180,7 +1180,7 @@ View<T, isConst, A>::assign
 }
 
 /// Initialize unstrided View
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that
 /// defines the shape.
 /// \param end Iterator to the end of this sequence.
@@ -1191,7 +1191,7 @@ View<T, isConst, A>::assign
 /// of coordinates used for scalar indexing and iterators.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator>
 inline void
 View<T, isConst, A>::assign
@@ -1207,14 +1207,14 @@ View<T, isConst, A>::assign
     // the invariant is not tested as a pre-condition of this
     // function to allow for unsafe manipulations prior to its
     // call
-    geometry_ = typename marray_detail::Geometry<A>(begin, end, 
+    geometry_ = typename marray_detail::Geometry<A>(begin, end,
         externalCoordinateOrder, internalCoordinateOrder, allocator);
     data_ = data;
-    testInvariant();    
+    testInvariant();
 }
 
 /// Initialize strided View
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that
 /// defines the shape.
 /// \param end Iterator to the end of this sequence.
@@ -1225,7 +1225,7 @@ View<T, isConst, A>::assign
 /// of coordinates used for scalar indexing and iterators.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator, class StrideIterator>
 inline void
 View<T, isConst, A>::assign
@@ -1241,7 +1241,7 @@ View<T, isConst, A>::assign
     // the invariant is not tested as a pre-condition of this
     // function to allow for unsafe manipulations prior to its
     // call
-    geometry_ = typename marray_detail::Geometry<A>(begin, end, 
+    geometry_ = typename marray_detail::Geometry<A>(begin, end,
         it, internalCoordinateOrder, allocator);
     data_ = data;
     testInvariant();
@@ -1249,7 +1249,7 @@ View<T, isConst, A>::assign
 
 #ifdef HAVE_CPP0X_INITIALIZER_LISTS
 /// Initialize unstrided View
-/// 
+///
 /// \param shape Shape initializer list.
 /// \param data Pointer to data.
 /// \param externalCoordinateOrder Flag specifying the order
@@ -1258,7 +1258,7 @@ View<T, isConst, A>::assign
 /// of coordinates used for scalar indexing and iterators.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::assign
 (
@@ -1274,7 +1274,7 @@ View<T, isConst, A>::assign
 }
 
 /// Initialize strided View
-/// 
+///
 /// \param shape Shape initializer list.
 /// \param strides Strides initialier list.
 /// defines the strides.
@@ -1283,7 +1283,7 @@ View<T, isConst, A>::assign
 /// of coordinates used for scalar indexing and iterators.
 /// \param allocator Allocator.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::assign
 (
@@ -1303,10 +1303,10 @@ View<T, isConst, A>::assign
 ///
 /// \param u If u is an integer type, scalar indexing is performed.
 /// Otherwise, it is assumed that u is an iterator to the beginning
-/// of a coordinate sequence. 
+/// of a coordinate sequence.
 /// \return Reference to the entry at u.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class U>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
@@ -1321,10 +1321,10 @@ View<T, isConst, A>::operator()
 ///
 /// \param u If u is an integer type, scalar indexing is performed.
 /// Otherwise, it is assumed that u is an iterator to the beginning
-/// of a coordinate sequence. 
+/// of a coordinate sequence.
 /// \return Reference to the entry at u.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class U>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
@@ -1342,10 +1342,10 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 2-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1364,10 +1364,10 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 2-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1386,11 +1386,11 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 3-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1411,11 +1411,11 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 3-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1436,12 +1436,12 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 4-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1455,7 +1455,7 @@ View<T, isConst, A>::operator()
     marray_detail::Assert(MARRAY_NO_DEBUG || (data_ != 0 && dimension() == 4));
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (c0 < shape(0) && c1 < shape(1)
         && c2 < shape(2) && c3 < shape(3)));
-    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2) 
+    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
         + c3*strides(3)];
 }
 
@@ -1464,12 +1464,12 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 4-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1483,7 +1483,7 @@ View<T, isConst, A>::operator()
     marray_detail::Assert(MARRAY_NO_DEBUG || (data_ != 0 && dimension() == 4));
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (c0 < shape(0) && c1 < shape(1)
         && c2 < shape(2) && c3 < shape(3)));
-    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2) 
+    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
         + c3*strides(3)];
 }
 
@@ -1492,13 +1492,13 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 5-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
 /// \param c4 5th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1513,7 +1513,7 @@ View<T, isConst, A>::operator()
     marray_detail::Assert(MARRAY_NO_DEBUG || (data_ != 0 && dimension() == 5));
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (c0 < shape(0) && c1 < shape(1)
         && c2 < shape(2) && c3 < shape(3) && c4 < shape(4)));
-    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2) 
+    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
         + c3*strides(3) + c4*strides(4)];
 }
 
@@ -1522,13 +1522,13 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 5-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
 /// \param c4 5th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1543,7 +1543,7 @@ View<T, isConst, A>::operator()
     marray_detail::Assert(MARRAY_NO_DEBUG || (data_ != 0 && dimension() == 5));
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (c0 < shape(0) && c1 < shape(1)
         && c2 < shape(2) && c3 < shape(3) && c4 < shape(4)));
-    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2) 
+    return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
         + c3*strides(3) + c4*strides(4)];
 }
 
@@ -1553,7 +1553,7 @@ View<T, isConst, A>::operator()
 
 /// 5-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
@@ -1564,7 +1564,7 @@ View<T, isConst, A>::operator()
 /// \param c8 9th coordinate.
 /// \param c9 10th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1578,7 +1578,7 @@ View<T, isConst, A>::operator()
     const size_t c7,
     const size_t c8,
     const size_t c9
-) 
+)
 {
     testInvariant();
     marray_detail::Assert(MARRAY_NO_DEBUG || (data_ != 0 && dimension() == 10));
@@ -1587,7 +1587,7 @@ View<T, isConst, A>::operator()
         && c5 < shape(5) && c6 < shape(6) && c7 < shape(7)
         && c8 < shape(8) && c9 < shape(9)));
     return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
-        + c3*strides(3) + c4*strides(4) + c5*strides(5) + c6*strides(6) 
+        + c3*strides(3) + c4*strides(4) + c5*strides(5) + c6*strides(6)
         + c7*strides(7) + c8*strides(8) + c9*strides(9)];
 }
 
@@ -1596,7 +1596,7 @@ View<T, isConst, A>::operator()
 /// This function issues a runtime error if the View is not
 /// 5-dimensional.
 ///
-/// \param c0 1st coordinate. 
+/// \param c0 1st coordinate.
 /// \param c1 2nd coordinate.
 /// \param c2 3rd coordinate.
 /// \param c3 4th coordinate.
@@ -1607,7 +1607,7 @@ View<T, isConst, A>::operator()
 /// \param c8 9th coordinate.
 /// \param c9 10th coordinate.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
@@ -1630,7 +1630,7 @@ View<T, isConst, A>::operator()
         && c5 < shape(5) && c6 < shape(6) && c7 < shape(7)
         && c8 < shape(8) && c9 < shape(9)));
     return data_[c0*strides(0) + c1*strides(1) + c2*strides(2)
-        + c3*strides(3) + c4*strides(4) + c5*strides(5) + c6*strides(6) 
+        + c3*strides(3) + c4*strides(4) + c5*strides(5) + c6*strides(6)
         + c7*strides(7) + c8*strides(8) + c9*strides(9)];
 }
 
@@ -1640,8 +1640,8 @@ template<class T, bool isConst, class A>
 inline size_t
 View<T, isConst, A>::elementAccessHelper
 (
-    const size_t Dim, 
-    const size_t value    
+    const size_t Dim,
+    const size_t value
 )
 {
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1) ) );
@@ -1652,11 +1652,11 @@ template<class T, bool isConst, class A>
 inline size_t
 View<T, isConst, A>::elementAccessHelper
 (
-    const size_t Dim, 
+    const size_t Dim,
     const size_t value
 ) const
 {
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1) ) );  
+    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1) ) );
     return strides(Dim-1) * value;
 }
 
@@ -1665,13 +1665,13 @@ template<typename... Args>
 inline size_t
 View<T, isConst, A>::elementAccessHelper
 (
-    const size_t Dim, 
-    const size_t value, 
+    const size_t Dim,
+    const size_t value,
     const Args... args
 )
 {
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1-sizeof...(args)) ) );      
-    return value * strides(Dim-1-sizeof...(args)) + elementAccessHelper(Dim, args...); 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1-sizeof...(args)) ) );
+    return value * strides(Dim-1-sizeof...(args)) + elementAccessHelper(Dim, args...);
 }
 
 template<class T, bool isConst, class A>
@@ -1679,13 +1679,13 @@ template<typename... Args>
 inline size_t
 View<T, isConst, A>::elementAccessHelper
 (
-    const size_t Dim, 
-    const size_t value, 
+    const size_t Dim,
+    const size_t value,
     const Args... args
 ) const
 {
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1-sizeof...(args)) ) );  
-    return value * strides(Dim-1-sizeof...(args)) + elementAccessHelper(Dim, args...); 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST || (value < shape(Dim-1-sizeof...(args)) ) );
+    return value * strides(Dim-1-sizeof...(args)) + elementAccessHelper(Dim, args...);
 }
 
 template<class T, bool isConst, class A>
@@ -1714,7 +1714,7 @@ View<T, isConst, A>::operator()
     const size_t value
 ) const
 {
-    testInvariant();    
+    testInvariant();
     if(dimension() == 0) {
         marray_detail::Assert(MARRAY_NO_ARG_TEST || value == 0);
         return data_[0];
@@ -1731,7 +1731,7 @@ template<typename... Args>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
-    const size_t value, 
+    const size_t value,
     const Args... args
 )
 {
@@ -1745,13 +1745,13 @@ template<typename... Args>
 inline typename View<T, isConst, A>::reference
 View<T, isConst, A>::operator()
 (
-    const size_t value, 
+    const size_t value,
     const Args... args
 ) const
 {
     testInvariant();
     marray_detail::Assert( MARRAY_NO_DEBUG || ( data_ != 0 && sizeof...(args)+1 == dimension() ) );
-    return data_[ strides(0) * static_cast<size_t>(value) 
+    return data_[ strides(0) * static_cast<size_t>(value)
         + static_cast<size_t>(elementAccessHelper(sizeof...(args)+1, args...)) ];
 }
 
@@ -1761,7 +1761,7 @@ View<T, isConst, A>::operator()
 ///
 /// \return Size.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t
 View<T, isConst, A>::size() const
 {
@@ -1774,7 +1774,7 @@ View<T, isConst, A>::size() const
 ///
 /// \return Dimension.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t
 View<T, isConst, A>::dimension() const
 {
@@ -1787,7 +1787,7 @@ View<T, isConst, A>::dimension() const
 /// \param dimension Dimension
 /// \return Shape in that dimension.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t
 View<T, isConst, A>::shape
 (
@@ -1805,7 +1805,7 @@ View<T, isConst, A>::shape
 /// \return iterator.
 /// \sa shapeEnd()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t*
 View<T, isConst, A>::shapeBegin() const
 {
@@ -1819,7 +1819,7 @@ View<T, isConst, A>::shapeBegin() const
 /// \return iterator.
 /// \sa shapeBegin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t*
 View<T, isConst, A>::shapeEnd() const
 {
@@ -1833,7 +1833,7 @@ View<T, isConst, A>::shapeEnd() const
 /// \param dimension Dimension
 /// \return Stride in that dimension.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t
 View<T, isConst, A>::strides
 (
@@ -1851,7 +1851,7 @@ View<T, isConst, A>::strides
 /// \return iterator.
 /// \sa stridesEnd()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t*
 View<T, isConst, A>::stridesBegin() const
 {
@@ -1865,7 +1865,7 @@ View<T, isConst, A>::stridesBegin() const
 /// \return iterator.
 /// \sa stridesBegin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const size_t*
 View<T, isConst, A>::stridesEnd() const
 {
@@ -1878,7 +1878,7 @@ View<T, isConst, A>::stridesEnd() const
 ///
 /// \return CoordinateOrder. enum: FirstMajorOrder, LastMajorOrder
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const CoordinateOrder&
 View<T, isConst, A>::coordinateOrder() const
 {
@@ -1890,7 +1890,7 @@ View<T, isConst, A>::coordinateOrder() const
 ///
 /// \return bool.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline const bool
 View<T, isConst, A>::isSimple() const
 {
@@ -1899,12 +1899,12 @@ View<T, isConst, A>::isSimple() const
 }
 
 /// Assignment.
-/// 
+///
 /// operator= (the assignment operator) has a non-trivial behavior.
 /// In most cases, it will work as most programmers will expect.
 /// Here's a complete description of the semantics of to.operator=(from)
 /// or equivalently, to = from.
-/// 
+///
 /// Consider the following cases:
 /// (1) 'to' is mutable (isConst == false)
 ///     (a) 'from' is mutable (isConst == false)
@@ -1912,17 +1912,17 @@ View<T, isConst, A>::isSimple() const
 ///         (ii) 'to' is un-initialized (data_ == 0)
 ///     (b) 'from' is constant (isConst == true)
 /// (2) 'to' is constant (isConst == true)
-/// 
+///
 /// (i) The operator attempts to copy the data under view 'b' to
 /// the memory under view 'a'. This works if both views have the
 /// same size, regardless of their dimension and shape. Equality
 /// of sizes is checked by an assertion.
-/// 
+///
 /// (ii) Unless &a == &b (self-assignment), the operator copies
 /// the (data) pointer of view 'b' to view 'a', without copying
 /// the data itself. In addition, all the properties of view 'b'
 /// are copied to view 'a'.
-/// 
+///
 /// (b) The operator attempts to copy the data under view 'b' to
 /// the memory under view 'a'. This works if both views have the
 /// same size, regardless of their dimension and shape. Equality
@@ -1930,14 +1930,14 @@ View<T, isConst, A>::isSimple() const
 /// the assertion fails (because the size of a will be zero).
 /// Unlike in (ii), the pointer is not copied in this case.
 /// Thus, a conversion from mutable to const is prevented.
-/// 
+///
 /// (2) Unless &a == &b (self-assignment), the operator copies
 /// the (data) pointer of view 'b' to view 'a', without copying
 /// the data itself. In addition, all the properties of view 'b'
 /// are copied to view 'a'. Note that changing the data under
 /// a constant view would be counter-intuitive.
-/// 
-template<class T, bool isConst, class A> 
+///
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>&
 View<T, isConst, A>::operator=
 (
@@ -1952,7 +1952,7 @@ View<T, isConst, A>::operator=
 
 /// Assignment.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>&
 View<T, isConst, A>::operator=
 (
@@ -1967,8 +1967,8 @@ View<T, isConst, A>::operator=
 
 /// Assignment.
 ///
-template<class T, bool isConst, class A> 
-template<class TLocal, bool isConstLocal, class ALocal> 
+template<class T, bool isConst, class A>
+template<class TLocal, bool isConstLocal, class ALocal>
 inline View<T, isConst, A>&
 View<T, isConst, A>::operator=
 (
@@ -1987,8 +1987,8 @@ View<T, isConst, A>::operator=
 ///
 /// All entries are set to value.
 ///
-template<class T, bool isConst, class A> 
-inline View<T, isConst, A>& 
+template<class T, bool isConst, class A>
+inline View<T, isConst, A>&
 View<T, isConst, A>::operator=
 (
     const T& value
@@ -2028,9 +2028,9 @@ View<T, isConst, A>::operator=
     return *this;
 }
 
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class E, class Te>
-inline View<T, isConst, A>& 
+inline View<T, isConst, A>&
 View<T, isConst, A>::operator=
 (
     const ViewExpression<E, Te>& expression
@@ -2048,7 +2048,7 @@ View<T, isConst, A>::operator=
 /// that determines the shape of the sub-view.
 /// \param out Sub-View (output).
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline void
 View<T, isConst, A>::view
@@ -2071,7 +2071,7 @@ View<T, isConst, A>::view
 /// for scalar indexing and iterators of the sub-view.
 /// \param out Sub-View (output).
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline void
 View<T, isConst, A>::view
@@ -2097,7 +2097,7 @@ View<T, isConst, A>::view
 /// that determines the shape of the sub-view.
 /// \return Sub-View.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline View<T, isConst, A>
 View<T, isConst, A>::view
@@ -2121,7 +2121,7 @@ View<T, isConst, A>::view
 /// for scalar indexing and iterators of the sub-view.
 /// \return Sub-View.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline View<T, isConst, A>
 View<T, isConst, A>::view
@@ -2145,7 +2145,7 @@ View<T, isConst, A>::view
 /// that determines the shape of the sub-view.
 /// \param out Sub-View (output).
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline void
 View<T, isConst, A>::constView
@@ -2165,10 +2165,10 @@ View<T, isConst, A>::constView
 /// \param sit Iterator to the beginning of a sequence
 /// that determines the shape of the sub-view.
 /// \param internalCoordinateOrder Flag to set the coordinate order
-/// for scalar indexing and iterators of the sub-view. 
+/// for scalar indexing and iterators of the sub-view.
 /// \param out Sub-View (output).
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline void
 View<T, isConst, A>::constView
@@ -2182,8 +2182,8 @@ View<T, isConst, A>::constView
     testInvariant();
     size_t offset = 0;
     coordinatesToOffset(bit, offset);
-    out.assign(sit, sit+dimension(), 
-        geometry_.stridesBegin(), 
+    out.assign(sit, sit+dimension(),
+        geometry_.stridesBegin(),
         static_cast<const T*>(data_) + offset,
         internalCoordinateOrder);
 }
@@ -2197,7 +2197,7 @@ View<T, isConst, A>::constView
 /// that determines the shape of the sub-view.
 /// \return Sub-View.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline View<T, true, A>
 View<T, isConst, A>::constView
@@ -2218,10 +2218,10 @@ View<T, isConst, A>::constView
 /// \param sit Iterator to the beginning of a sequence
 /// that determines the shape of the sub-view.
 /// \param internalCoordinateOrder Flag to set the coordinate order
-/// for scalar indexing and iterators of the sub-view. 
+/// for scalar indexing and iterators of the sub-view.
 /// \return Sub-View.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class BaseIterator, class ShapeIterator>
 inline View<T, true, A>
 View<T, isConst, A>::constView
@@ -2246,7 +2246,7 @@ View<T, isConst, A>::constView
 /// \param internalCoordinateOrder Flag to set the coordinate order
 /// for scalar indexing and iterators of the sub-view.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::view
 (
@@ -2267,14 +2267,14 @@ View<T, isConst, A>::view
 /// that determines the stop position of the sub-view.
 /// \param out Sub-View (output).
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::view
 (
     std::initializer_list<size_t> b,
     std::initializer_list<size_t> s,
     View<T, isConst, A>& out
-) const 
+) const
 {
     view(b.begin(), s.begin(), coordinateOrder(), out);
 }
@@ -2286,9 +2286,9 @@ View<T, isConst, A>::view
 /// \param s Initializer list coordinate sequence
 /// that determines the stop position of the sub-view.
 /// \param internalCoordinateOrder Flag to set the coordinate order
-/// for scalar indexing and iterators of the sub-view. 
+/// for scalar indexing and iterators of the sub-view.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::constView
 (
@@ -2324,19 +2324,19 @@ View<T, isConst, A>::constView
 #endif
 
 /// Reshape the View.
-/// 
+///
 /// Two conditions have to be fulfilled in order for reshape to work:
 /// - The new and the old shape must have the same size.
 /// - The view must be simple, cf. isSimple().
 /// .
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that determines
 /// the new shape.
 /// \param end Iterator to the end of that sequence.
 ///
 /// \sa reshapedView(), isSimple()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator>
 inline void
 View<T, isConst, A>::reshape
@@ -2358,19 +2358,19 @@ View<T, isConst, A>::reshape
 }
 
 /// Get a reshaped View.
-/// 
+///
 /// Two conditions have to be fulfilled:
 /// - The new and the old shape must have the same size.
 /// - The view must be simple, cf. isSimple().
 /// .
-/// 
+///
 /// \param begin Iterator to the beginning of a sequence that determines
 /// the new shape.
 /// \param end Iterator to the end of that sequence.
 ///
 /// \sa reshape(), isSimple()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class ShapeIterator>
 inline View<T, isConst, A>
 View<T, isConst, A>::reshapedView
@@ -2386,17 +2386,17 @@ View<T, isConst, A>::reshapedView
 
 #ifdef HAVE_CPP0X_INITIALIZER_LISTS
 /// Reshape the View.
-/// 
+///
 /// Two conditions have to be fulfilled in order for reshape to work:
 /// - The new and the old shape must have the same size.
 /// - The view must be simple, cf. isSimple().
 /// .
-/// 
+///
 /// \param shape Initializer list defining the new shape.
 ///
 /// \sa reshapedView(), isSimple()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::reshape
 (
@@ -2407,17 +2407,17 @@ View<T, isConst, A>::reshape
 }
 
 /// Get a reshaped View.
-/// 
+///
 /// Two conditions have to be fulfilled:
 /// - The new and the old shape must have the same size.
 /// - The view must be simple, cf. isSimple().
 /// .
-/// 
+///
 /// \param shape Initializer list defining the new shape.
 ///
 /// \sa reshape(), isSimple()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>
 View<T, isConst, A>::reshapedView
 (
@@ -2438,7 +2438,7 @@ View<T, isConst, A>::reshapedView
 /// \return The bound view.
 /// \sa squeeze(), squeezeView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 View<T, isConst, A>
 View<T, isConst, A>::boundView
 (
@@ -2479,7 +2479,7 @@ View<T, isConst, A>::boundView
 ///
 /// \sa squeezedView(), boundView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 void
 View<T, isConst, A>::squeeze()
 {
@@ -2505,7 +2505,7 @@ View<T, isConst, A>::squeeze()
                     }
                 }
                 geometry_.resize(newDimension);
-                marray_detail::stridesFromShape(geometry_.shapeBegin(), geometry_.shapeEnd(), 
+                marray_detail::stridesFromShape(geometry_.shapeBegin(), geometry_.shapeEnd(),
                     geometry_.shapeStridesBegin(), geometry_.coordinateOrder());
                 updateSimplicity();
             }
@@ -2519,7 +2519,7 @@ View<T, isConst, A>::squeeze()
 ///
 /// \sa squeeze(), boundView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>
 View<T, isConst, A>::squeezedView() const
 {
@@ -2556,7 +2556,7 @@ View<T, isConst, A>::permute
 /// \sa permutedView(), transpose(), transposedView(), shift(),
 /// shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class CoordinateIterator>
 void
 View<T, isConst, A>::permute
@@ -2603,7 +2603,7 @@ View<T, isConst, A>::permute
 /// \sa permute(), transpose(), transposedView(), shift(),
 /// shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class CoordinateIterator>
 inline View<T, isConst, A>
 View<T, isConst, A>::permutedView
@@ -2622,7 +2622,7 @@ View<T, isConst, A>::permutedView
 /// \param c2 Dimension
 /// \sa permute(), permutedView(), shift(), shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 void
 View<T, isConst, A>::transpose
 (
@@ -2662,7 +2662,7 @@ View<T, isConst, A>::transpose
 /// \sa transposedView(), permute(), permutedView(), shift(),
 /// shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 void
 View<T, isConst, A>::transpose()
 {
@@ -2694,7 +2694,7 @@ View<T, isConst, A>::transpose()
 /// \sa transpose(), permute(), permutedView(), shift(),
 /// shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>
 View<T, isConst, A>::transposedView
 (
@@ -2713,7 +2713,7 @@ View<T, isConst, A>::transposedView
 /// \sa transpose(), permute(), permutedView(), shift(),
 /// shiftedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>
 View<T, isConst, A>::transposedView() const
 {
@@ -2728,12 +2728,12 @@ View<T, isConst, A>::transposedView() const
 /// \sa shiftedView(), permute(), permutedView(), transpose(),
 /// transposedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::shift
 (
     const int n
-) 
+)
 {
     testInvariant();
     marray_detail::Assert(MARRAY_NO_DEBUG || dimension() != 0);
@@ -2760,7 +2760,7 @@ View<T, isConst, A>::shift
 /// \param n Number of positions to shift
 /// \sa shift(), permute(), permutedView(), transpose(), transposedView()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline View<T, isConst, A>
 View<T, isConst, A>::shiftedView
 (
@@ -2778,7 +2778,7 @@ View<T, isConst, A>::shiftedView
 /// \sa end()
 ///
 
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::iterator
 View<T, isConst, A>::begin()
 {
@@ -2791,7 +2791,7 @@ View<T, isConst, A>::begin()
 /// \return Iterator.
 /// \sa begin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::iterator
 View<T, isConst, A>::end()
 {
@@ -2804,7 +2804,7 @@ View<T, isConst, A>::end()
 /// \return Iterator.
 /// \sa end()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::const_iterator
 View<T, isConst, A>::begin() const
 {
@@ -2817,7 +2817,7 @@ View<T, isConst, A>::begin() const
 /// \return Iterator.
 /// \sa begin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::const_iterator
 
 View<T, isConst, A>::end() const
@@ -2831,7 +2831,7 @@ View<T, isConst, A>::end() const
 /// \return Iterator.
 /// \sa rend()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reverse_iterator
 View<T, isConst, A>::rbegin()
 {
@@ -2843,7 +2843,7 @@ View<T, isConst, A>::rbegin()
 /// \return Iterator.
 /// \sa rbegin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::reverse_iterator
 View<T, isConst, A>::rend()
 {
@@ -2855,7 +2855,7 @@ View<T, isConst, A>::rend()
 /// \return Iterator.
 /// \sa rend()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::const_reverse_iterator
 View<T, isConst, A>::rbegin() const
 {
@@ -2867,7 +2867,7 @@ View<T, isConst, A>::rbegin() const
 /// \return Iterator.
 /// \sa rbegin()
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline typename View<T, isConst, A>::const_reverse_iterator
 View<T, isConst, A>::rend() const
 {
@@ -2877,32 +2877,32 @@ View<T, isConst, A>::rend() const
 /// Update Simplicity.
 ///
 /// This function sets the redundant boolean attribute isSimple_.
-/// isSimple_ is set to true if the shape strides equal the 
-/// strides. 
+/// isSimple_ is set to true if the shape strides equal the
+/// strides.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::updateSimplicity()
 {
-    // no invariant test here because this function 
+    // no invariant test here because this function
     // is called during unsafe updates of a view
     geometry_.updateSimplicity();
 }
 
 /// Unsafe direct memory access.
 ///
-/// This function provides direct access to the data items under the view 
+/// This function provides direct access to the data items under the view
 /// in the order in which these items reside in memory.
 ///
 /// \param offset offset to be added to the data pointer.
 /// \return constant reference to the data item.
 ///
-template<class T, bool isConst, class A> 
-inline const T& 
+template<class T, bool isConst, class A>
+inline const T&
 View<T, isConst, A>::operator[]
 (
     const size_t offset
-) 
+)
 const
 {
     return data_[offset];
@@ -2910,14 +2910,14 @@ const
 
 /// Unsafe direct memory access.
 ///
-/// This function provides direct access to the data items under the view 
+/// This function provides direct access to the data items under the view
 /// in the order in which these items reside in memory.
 ///
 /// \param offset offset to be added to the data pointer.
 /// \return reference to the data item.
 ///
-template<class T, bool isConst, class A> 
-inline T& 
+template<class T, bool isConst, class A>
+inline T&
 View<T, isConst, A>::operator[]
 (
     const size_t offset
@@ -2931,7 +2931,7 @@ View<T, isConst, A>::operator[]
 /// This function tests the invariant of View and thus the consistency
 /// of redundant information.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 inline void
 View<T, isConst, A>::testInvariant() const
 {
@@ -2968,7 +2968,7 @@ View<T, isConst, A>::testInvariant() const
                 }
             }
 
-            // test the simplicity condition 
+            // test the simplicity condition
             if(geometry_.isSimple()) {
                 for(size_t j=0; j<geometry_.dimension(); ++j) {
                     marray_detail::Assert(geometry_.strides(j) == geometry_.shapeStrides(j));
@@ -2985,15 +2985,15 @@ View<T, isConst, A>::testInvariant() const
 /// whose member function overlaps() is called.
 /// (2) the interval between the first and the last element of v.
 ///
-/// Note that this not necessarily implies the existence of an element 
+/// Note that this not necessarily implies the existence of an element
 /// that is addressed by both v and the current object. v could for
 /// instance address all odd elements in a vector while the current
-/// object addresses all even elements. 
+/// object addresses all even elements.
 ///
 /// \param v A view to compare with *this.
 /// \return bool.
 ///
-template<class T, bool isConst, class A> 
+template<class T, bool isConst, class A>
 template<class TLocal, bool isConstLocal, class ALocal>
 inline bool View<T, isConst, A>::overlaps
 (
@@ -3024,7 +3024,7 @@ inline bool View<T, isConst, A>::overlaps
 /// Output as string.
 ///
 template<class T, bool isConst, class A>
-std::string 
+std::string
 View<T, isConst, A>::asString
 (
     const StringStyle& style
@@ -3163,9 +3163,9 @@ operator++
 (
     Marray<T, A>& in,
     int dummy
-) 
+)
 {
-    Marray<T, A> out = in; 
+    Marray<T, A> out = in;
     marray_detail::operate(in, marray_detail::PostfixIncrement<T>());
     return out;
 }
@@ -3201,9 +3201,9 @@ operator--
 (
     Marray<T, A>& in,
     int dummy
-) 
+)
 {
-    Marray<T, A> out = in; 
+    Marray<T, A> out = in;
     marray_detail::operate(in, marray_detail::PostfixDecrement<T>());
     return out;
 }
@@ -3236,13 +3236,13 @@ template<class E1, class T1, class E2, class T2>
 inline const BinaryViewExpression<E1, T1, E2, T2, marray_detail::Plus<T1, T2, typename marray_detail::PromoteType<T1, T2>::type> >
 operator+
 (
-    const ViewExpression<E1, T1>& expression1, 
+    const ViewExpression<E1, T1>& expression1,
     const ViewExpression<E2, T2>& expression2
 )
 {
     typedef typename marray_detail::PromoteType<T1, T2>::type promoted_type;
     typedef marray_detail::Plus<T1, T2, promoted_type> Functor;
-    typedef BinaryViewExpression<E1, T1, E2, T2, Functor> return_type; 
+    typedef BinaryViewExpression<E1, T1, E2, T2, Functor> return_type;
     return return_type(expression1, expression2);
 }
 
@@ -3292,12 +3292,12 @@ inline const BinaryViewExpression<E1, T1, E2, T2,
     marray_detail::Minus<T1, T2, typename marray_detail::PromoteType<T1, T2>::type> >
 operator-
 (
-    const ViewExpression<E1, T1>& expression1, 
+    const ViewExpression<E1, T1>& expression1,
     const ViewExpression<E2, T2>& expression2
 )
 {
     return BinaryViewExpression<E1, T1, E2, T2,
-        marray_detail::Minus<T1, T2, 
+        marray_detail::Minus<T1, T2,
             typename marray_detail::PromoteType<T1, T2>::type> >(
             expression1, expression2);
 }
@@ -3318,12 +3318,12 @@ inline const BinaryViewExpression<E1, T1, E2, T2,
     marray_detail::Times<T1, T2, typename marray_detail::PromoteType<T1, T2>::type> >
 operator*
 (
-    const ViewExpression<E1, T1>& expression1, 
+    const ViewExpression<E1, T1>& expression1,
     const ViewExpression<E2, T2>& expression2
 )
 {
     return BinaryViewExpression<E1, T1, E2, T2,
-        marray_detail::Times<T1, T2, 
+        marray_detail::Times<T1, T2,
             typename marray_detail::PromoteType<T1, T2>::type > >(
             expression1, expression2);
 }
@@ -3333,12 +3333,12 @@ inline const BinaryViewExpression<E1, T1, E2, T2,
     marray_detail::DividedBy<T1, T2, typename marray_detail::PromoteType<T1, T2>::type> >
 operator/
 (
-    const ViewExpression<E1, T1>& expression1, 
+    const ViewExpression<E1, T1>& expression1,
     const ViewExpression<E2, T2>& expression2
 )
 {
     return BinaryViewExpression<E1, T1, E2, T2,
-        marray_detail::DividedBy<T1, T2, 
+        marray_detail::DividedBy<T1, T2,
             typename marray_detail::PromoteType<T1, T2>::type > >(
             expression1, expression2);
 }
@@ -3413,7 +3413,7 @@ MARRAY_BINARY_OPERATOR_ALL_TYPES(/, DividedBy)
 /// \param allocator Allocator.
 /// \sa Marray()
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Marray<T, A>::assign
 (
@@ -3430,14 +3430,14 @@ Marray<T, A>::assign
 
 /// Empty constructor.
 ///
-/// \param allocator Allocator. 
+/// \param allocator Allocator.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline
 Marray<T, A>::Marray
 (
     const allocator_type& allocator
-) 
+)
 : base(allocator),
   dataAllocator_(allocator)
 {
@@ -3448,19 +3448,19 @@ Marray<T, A>::Marray
 ///
 /// \param value Value of the single data item.
 /// \param coordinateOrder Flag specifying whether FirstMajorOrder or
-/// LastMajorOrder is to be used. As the Marray can be resized after 
+/// LastMajorOrder is to be used. As the Marray can be resized after
 /// construction, the coordinate order has to be set even for a
 /// 0-dimensional Marray.
 /// \param allocator Allocator.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline
 Marray<T, A>::Marray
 (
     const T& value,
     const CoordinateOrder& coordinateOrder,
     const allocator_type& allocator
-) 
+)
 :   dataAllocator_(allocator)
 {
     this->data_ = dataAllocator_.allocate(1);
@@ -3473,13 +3473,13 @@ Marray<T, A>::Marray
 ///
 /// \param in Marray (source).
 ///
-template<class T, class A> 
+template<class T, class A>
 inline
 Marray<T, A>::Marray
 (
     const Marray<T, A>& in
 )
-:   dataAllocator_(in.dataAllocator_) 
+:   dataAllocator_(in.dataAllocator_)
 {
     if(!MARRAY_NO_ARG_TEST) {
         in.testInvariant();
@@ -3499,13 +3499,13 @@ Marray<T, A>::Marray
 ///
 /// \param in View (source).
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class TLocal, bool isConstLocal, class ALocal>
 inline
 Marray<T, A>::Marray
 (
     const View<TLocal, isConstLocal, ALocal>& in
-) 
+)
 : dataAllocator_()
 {
     if(!MARRAY_NO_ARG_TEST) {
@@ -3544,25 +3544,25 @@ Marray<T, A>::Marray
 /// \param expression ViewExpression.
 /// \param allocator Allocator.
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class E, class Te>
 inline
 Marray<T, A>::Marray
 (
     const ViewExpression<E, Te>& expression,
     const allocator_type& allocator
-) 
+)
 :   dataAllocator_(allocator)
 {
     this->data_ = dataAllocator_.allocate(expression.size());
     if(expression.dimension() == 0) {
-        this->geometry_ = geometry_type(0, 
-            static_cast<const E&>(expression).coordinateOrder(), 
+        this->geometry_ = geometry_type(0,
+            static_cast<const E&>(expression).coordinateOrder(),
             1, true, dataAllocator_);
     }
     else {
         this->geometry_ = geometry_type(
-            static_cast<const E&>(expression).shapeBegin(), 
+            static_cast<const E&>(expression).shapeBegin(),
             static_cast<const E&>(expression).shapeEnd(),
             static_cast<const E&>(expression).coordinateOrder(),
             static_cast<const E&>(expression).coordinateOrder(),
@@ -3591,7 +3591,7 @@ Marray<T, A>::Marray
 /// LastMajorOrder is to be used.
 /// \param allocator Allocator.
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class ShapeIterator>
 inline
 Marray<T, A>::Marray
@@ -3606,8 +3606,8 @@ Marray<T, A>::Marray
 {
     size_t size = std::accumulate<ShapeIterator, size_t>(begin, end, 1, std::multiplies<size_t>());
     marray_detail::Assert(MARRAY_NO_ARG_TEST || size != 0);
-    base::assign(begin, end, dataAllocator_.allocate(size), coordinateOrder, 
-        coordinateOrder, allocator); 
+    base::assign(begin, end, dataAllocator_.allocate(size), coordinateOrder,
+        coordinateOrder, allocator);
     for(size_t j=0; j<size; ++j) {
         this->data_[j] = value;
     }
@@ -3624,7 +3624,7 @@ Marray<T, A>::Marray
 /// LastMajorOrder is to be used.
 /// \param allocator Allocator.
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class ShapeIterator>
 inline
 Marray<T, A>::Marray
@@ -3634,15 +3634,15 @@ Marray<T, A>::Marray
     ShapeIterator end,
     const CoordinateOrder& coordinateOrder,
     const allocator_type& allocator
-) 
+)
 : dataAllocator_(allocator)
 {
     size_t size = std::accumulate<ShapeIterator, size_t>(
         begin, end, 1, std::multiplies<size_t>()
     );
     marray_detail::Assert(MARRAY_NO_ARG_TEST || size != 0);
-    base::assign(begin, end, dataAllocator_.allocate(size), coordinateOrder, 
-        coordinateOrder, allocator); 
+    base::assign(begin, end, dataAllocator_.allocate(size), coordinateOrder,
+        coordinateOrder, allocator);
     testInvariant();
 }
 
@@ -3664,14 +3664,14 @@ Marray<T, A>::Marray
     const CoordinateOrder& coordinateOrder,
     const allocator_type& allocator
 
-) 
+)
 : dataAllocator_(allocator)
 {
-    size_t size = std::accumulate(shape.begin(), shape.end(), 
+    size_t size = std::accumulate(shape.begin(), shape.end(),
         1, std::multiplies<size_t>());
     marray_detail::Assert(MARRAY_NO_ARG_TEST || size != 0);
-    base::assign(shape.begin(), shape.end(), dataAllocator_.allocate(size), 
-                 coordinateOrder, coordinateOrder, allocator); 
+    base::assign(shape.begin(), shape.end(), dataAllocator_.allocate(size),
+                 coordinateOrder, coordinateOrder, allocator);
     for(size_t j=0; j<size; ++j) {
         this->data_[j] = value;
     }
@@ -3681,7 +3681,7 @@ Marray<T, A>::Marray
 
 /// Destructor.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline
 Marray<T, A>::~Marray()
 {
@@ -3689,18 +3689,18 @@ Marray<T, A>::~Marray()
 }
 
 /// Assignment.
-/// 
+///
 /// This operator works as follows:
 /// - It always attempts to copy the data from 'in'.
-/// - If 'in' and *this have the same size, already allocated memory 
-///   is re-used. Otherwise, the memory allocated for *this is freed, 
+/// - If 'in' and *this have the same size, already allocated memory
+///   is re-used. Otherwise, the memory allocated for *this is freed,
 ///   and new memory is allocated to take the copy of 'in'.
 /// - If 'in' is un-initialized, memory allocated for *this is freed.
 /// .
 ///
 /// \param in Marray (source).
-/// 
-template<class T, class A> 
+///
+template<class T, class A>
 
 Marray<T, A>&
 Marray<T, A>::operator=
@@ -3738,17 +3738,17 @@ Marray<T, A>::operator=
 ///
 /// This operator works as follows:
 /// - It always attempts to copy the data from 'in'.
-/// - If 'in' and *this have overlap, a copy of 'in' is made and 
+/// - If 'in' and *this have overlap, a copy of 'in' is made and
 ///   assigned to *this.
-/// - If 'in' and *this have the same size, already allocated memory 
-///   is re-used. Otherwise, the memory allocated for *this is freed, 
+/// - If 'in' and *this have the same size, already allocated memory
+///   is re-used. Otherwise, the memory allocated for *this is freed,
 ///   and new memory is allocated to take the copy of 'in'.
 /// - If 'in' is un-initialized, memory allocated for *this is freed.
 /// .
-/// 
+///
 /// \param in View (source).
-/// 
-template<class T, class A> 
+///
+template<class T, class A>
 template<class TLocal, bool isConstLocal, class ALocal>
 Marray<T, A>&
 Marray<T, A>::operator=
@@ -3829,8 +3829,8 @@ Marray<T, A>::operator=
 ///
 /// All entries are set to value.
 ///
-template<class T, class A> 
-inline Marray<T, A>& 
+template<class T, class A>
+inline Marray<T, A>&
 Marray<T, A>::operator=
 (
     const T& value
@@ -3843,7 +3843,7 @@ Marray<T, A>::operator=
     return *this;
 }
 
-template<class T, class A> 
+template<class T, class A>
 template<class E, class Te>
 inline Marray<T, A>&
 Marray<T, A>::operator=
@@ -3861,7 +3861,7 @@ Marray<T, A>::operator=
             dataAllocator_.deallocate(this->data_, this->size());
             this->data_ = dataAllocator_.allocate(expression.size());
         }
-        
+
         // copy geometry
         this->geometry_.resize(expression.dimension());
         for(size_t j=0; j<expression.dimension(); ++j) {
@@ -3876,14 +3876,14 @@ Marray<T, A>::operator=
             marray_detail::stridesFromShape(this->geometry_.shapeBegin(), this->geometry_.shapeEnd(),
                 this->geometry_.stridesBegin(), this->geometry_.coordinateOrder());
         }
-        
+
         // copy data
         marray_detail::operate(*this, expression, marray_detail::Assign<T, Te>());
     }
     return *this;
 }
 
-template<class T, class A> 
+template<class T, class A>
 template<bool SKIP_INITIALIZATION, class ShapeIterator>
 inline void
 Marray<T, A>::resizeHelper
@@ -3892,7 +3892,7 @@ Marray<T, A>::resizeHelper
     ShapeIterator end,
     const T& value
 )
-{   
+{
     testInvariant();
     // compute size
     std::vector<size_t> newShape;
@@ -3904,7 +3904,7 @@ Marray<T, A>::resizeHelper
         newSize *= x;
     }
     // allocate new
-    value_type* newData = dataAllocator_.allocate(newSize); 
+    value_type* newData = dataAllocator_.allocate(newSize);
     if(!SKIP_INITIALIZATION) {
         for(size_t j=0; j<newSize; ++j) {
             newData[j] = value;
@@ -3935,7 +3935,7 @@ Marray<T, A>::resizeHelper
             view2.squeeze();
             view2 = view1; // copy
         }
-        dataAllocator_.deallocate(this->data_, this->size()); 
+        dataAllocator_.deallocate(this->data_, this->size());
         this->data_ = 0;
     }
     base::assign(begin, end, newData, this->geometry_.coordinateOrder(),
@@ -3950,7 +3950,7 @@ Marray<T, A>::resizeHelper
 /// \param end Iterator to the end of that sequence.
 /// \param value Initial value to be assigned to newly allocated entries.
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class ShapeIterator>
 void
 Marray<T, A>::resize
@@ -3959,7 +3959,7 @@ Marray<T, A>::resize
     ShapeIterator end,
     const T& value
 )
-{   
+{
     resizeHelper<false>(begin, end, value);
 }
 
@@ -3970,7 +3970,7 @@ Marray<T, A>::resize
 /// the new shape.
 /// \param end Iterator to the end of that sequence.
 ///
-template<class T, class A> 
+template<class T, class A>
 template<class ShapeIterator>
 void
 Marray<T, A>::resize
@@ -3979,7 +3979,7 @@ Marray<T, A>::resize
     ShapeIterator begin,
     ShapeIterator end
 )
-{   
+{
     resizeHelper<true>(begin, end);
 }
 
@@ -3989,7 +3989,7 @@ Marray<T, A>::resize
 /// \param shape Shape given as initializer list.
 /// \param value Initial value to be assigned to newly allocated entries.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Marray<T, A>::resize
 (
@@ -4005,7 +4005,7 @@ Marray<T, A>::resize
 /// \param shape Shape given as initializer list.
 /// \param value Initial value to be assigned to newly allocated entries.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Marray<T, A>::resize
 (
@@ -4019,7 +4019,7 @@ Marray<T, A>::resize
 
 /// Invariant test.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Marray<T, A>::testInvariant() const
 {
@@ -4032,18 +4032,18 @@ Marray<T, A>::testInvariant() const
 /// Invariant test.
 ///
 template<class T, bool isConst, class A>
-inline void 
+inline void
 Iterator<T, isConst, A>::testInvariant() const
 {
     if(!MARRAY_NO_DEBUG) {
-        if(view_ == 0) { 
-            marray_detail::Assert(coordinates_.size() == 0 
+        if(view_ == 0) {
+            marray_detail::Assert(coordinates_.size() == 0
                 && index_ == 0
                 && pointer_ == 0);
         }
-        else { 
+        else {
             if(view_->size() == 0) { // un-initialized view
-                marray_detail::Assert(coordinates_.size() == 0 
+                marray_detail::Assert(coordinates_.size() == 0
                     && index_ == 0
                     && pointer_ == 0);
             }
@@ -4112,7 +4112,7 @@ inline Iterator<T, isConst, A>::Iterator
     index_(index),
     coordinates_(std::vector<size_t>(view.dimension()))
     // Note for developers: If isConst==false, the construction view_(&view)
-    // fails due to incompatible types. This is intended because it should 
+    // fails due to incompatible types. This is intended because it should
     // not be possible to construct a mutable iterator on constant data.
 {
     if(view.size() == 0) { // un-initialized view
@@ -4166,7 +4166,7 @@ inline Iterator<T, isConst, A>::Iterator
     coordinates_(std::vector<size_t>(view.dimension()))
     // Note for developers: If isConst==true, the construction
     // view_(reinterpret_cast<view_pointer>(&view)) works as well.
-    // This is intended because it should be possible to construct 
+    // This is intended because it should be possible to construct
     // a constant iterator on mutable data.
 {
     if(view.size() == 0) { // un-initialized view
@@ -4220,7 +4220,7 @@ inline Iterator<T, isConst, A>::Iterator
     coordinates_(std::vector<size_t>(view.dimension()))
     // Note for developers: If isConst==true, the construction
     // view_(reinterpret_cast<view_pointer>(&view)) works as well.
-    // This is intended because it should be possible to construct 
+    // This is intended because it should be possible to construct
     // a constant iterator on mutable data.
 {
     if(view.size() == 0) { // un-initialized view
@@ -4258,16 +4258,16 @@ inline Iterator<T, isConst, A>::Iterator
 }
 
 /// Copy constructor or conversion from an Iterator on mutable data.
-/// 
+///
 template<class T, bool isConst, class A>
 inline Iterator<T, isConst, A>::Iterator
 (
     const Iterator<T, false, A>& in
 )
 :   view_(view_pointer(in.view_)),
-    pointer_(pointer(in.pointer_)), 
+    pointer_(pointer(in.pointer_)),
     index_(in.index_),
-    coordinates_(in.coordinates_)  
+    coordinates_(in.coordinates_)
 {
     testInvariant();
 }
@@ -4443,7 +4443,7 @@ Iterator<T, isConst, A>::operator--()
         --pointer_;
     }
     else {
-        if(index_ == view_->size()) { 
+        if(index_ == view_->size()) {
             // decrement from end iterator
             --pointer_;
             if(view_->coordinateOrder() == LastMajorOrder) {
@@ -4496,7 +4496,7 @@ Iterator<T, isConst, A>::operator--()
 /// Postfix increment.
 ///
 template<class T, bool isConst, class A>
-inline Iterator<T, isConst, A> 
+inline Iterator<T, isConst, A>
 Iterator<T, isConst, A>::operator++(int)
 {
     marray_detail::Assert(MARRAY_NO_DEBUG || view_ != 0);
@@ -4508,7 +4508,7 @@ Iterator<T, isConst, A>::operator++(int)
 /// Postfix decrement.
 ///
 template<class T, bool isConst, class A>
-inline Iterator<T, isConst, A> 
+inline Iterator<T, isConst, A>
 Iterator<T, isConst, A>::operator--(int)
 {
     marray_detail::Assert(MARRAY_NO_DEBUG || (view_ != 0 && index_ > 0));
@@ -4557,7 +4557,7 @@ Iterator<T, isConst, A>::operator-
 }
 
 template<class T, bool isConst, class A>
-template<bool isConstLocal> 
+template<bool isConstLocal>
 inline bool
 Iterator<T, isConst, A>::operator==
 (
@@ -4579,7 +4579,7 @@ Iterator<T, isConst, A>::operator!=
 {
     marray_detail::Assert(MARRAY_NO_DEBUG || view_ != 0);
     marray_detail::Assert(MARRAY_NO_ARG_TEST || it.view_ != 0);
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST ||
         static_cast<const void*>(it.view_) == static_cast<const void*>(view_));
     return index_ != it.index_;
 }
@@ -4624,7 +4624,7 @@ Iterator<T, isConst, A>::operator<=
 }
 
 template<class T, bool isConst, class A>
-template<bool isConstLocal> 
+template<bool isConstLocal>
 inline bool
 Iterator<T, isConst, A>::operator>=
 (
@@ -4653,7 +4653,7 @@ Iterator<T, isConst, A>::hasMore() const
 /// \return index Index.
 ///
 template<class T, bool isConst, class A>
-inline size_t 
+inline size_t
 Iterator<T, isConst, A>::index() const
 {
     return index_;
@@ -4695,7 +4695,7 @@ inline
 Vector<T, A>::Vector
 (
     const allocator_type& allocator
-) 
+)
 : base(allocator)
 {
     testInvariant();
@@ -4749,7 +4749,7 @@ Vector<T, A>::Vector
 /// \param size Size.
 /// \param value Initial value of entries.
 /// \param allocator Allocator.
-/// 
+///
 template<class T, class A>
 inline
 Vector<T, A>::Vector
@@ -4757,13 +4757,13 @@ Vector<T, A>::Vector
     const size_t size,
     const T& value,
     const allocator_type& allocator
-) 
+)
 : base(allocator)
 {
     if(size != 0) {
         size_t shape[1] = {size};
         this->data_ = this->dataAllocator_.allocate(size);
-        base::base::assign(&shape[0], &shape[1], this->data_); 
+        base::base::assign(&shape[0], &shape[1], this->data_);
         for(size_t j=0; j<size; ++j) {
             this->data_[j] = value;
         }
@@ -4776,7 +4776,7 @@ Vector<T, A>::Vector
 /// \param is Flag to be set to SkipInitialization.
 /// \param size Size.
 /// \param allocator Allocator.
-/// 
+///
 template<class T, class A>
 inline
 Vector<T, A>::Vector
@@ -4784,13 +4784,13 @@ Vector<T, A>::Vector
     const InitializationSkipping& is,
     const size_t size,
     const allocator_type& allocator
-) 
+)
 : base(allocator)
 {
     if(size != 0) {
         size_t shape[1] = {size};
         this->data_ = this->dataAllocator_.allocate(size);
-        base::base::assign(&shape[0], &shape[1], this->data_); 
+        base::base::assign(&shape[0], &shape[1], this->data_);
     }
     testInvariant();
 }
@@ -4807,7 +4807,7 @@ Vector<T, A>::Vector
 (
     const ViewExpression<E, Te>& expression,
     const allocator_type& allocator
-) 
+)
 : base(expression, allocator)
 {
     marray_detail::Assert(MARRAY_NO_ARG_TEST || expression.dimension() == 1);
@@ -4897,7 +4897,7 @@ Vector<T, A>::operator=
 )
 {
     in.testInvariant();
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST ||
         in.data_ == 0 || // empty
         (in.dimension() == 0 && in.size() == 1) || // scalar
         in.dimension() == 1); // vector
@@ -4978,7 +4978,7 @@ Vector<T, A>::resize
     }
     else {
         size_t shape[1] = {size};
-        base::resize(&shape[0], &shape[1], value); 
+        base::resize(&shape[0], &shape[1], value);
     }
     testInvariant();
 }
@@ -5001,7 +5001,7 @@ Vector<T, A>::resize
     }
     else {
         size_t shape[1] = {size};
-        base::resize(is, &shape[0], &shape[1]); 
+        base::resize(is, &shape[0], &shape[1]);
     }
     testInvariant();
 }
@@ -5034,12 +5034,12 @@ Vector<T, A>::operator[]
 
 /// Invariant test.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Vector<T, A>::testInvariant() const
 {
     View<T, false, A>::testInvariant();
-    marray_detail::Assert(MARRAY_NO_DEBUG || this->data_ == 0 || 
+    marray_detail::Assert(MARRAY_NO_DEBUG || this->data_ == 0 ||
         (this->geometry_.isSimple() && this->geometry_.dimension() == 1));
 }
 
@@ -5073,14 +5073,14 @@ Matrix<T, A>::Matrix
 )
 {
     in.testInvariant();
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST ||
         in.data_ == 0 || // not initialized
         (in.dimension() == 0 && in.size() == 1) || // scalar
         in.dimension() == 2); // matrix
     this->geometry_.size() = in.size();
     this->geometry_.coordinateOrder() = in.coordinateOrder();
     if(in.data_ != 0) { // 'in' is uninitialized
-        this->geometry_.resize(2); 
+        this->geometry_.resize(2);
         if(in.dimension() == 0) { // in is a scalar
             this->geometry_.shape(0) = 1;
             this->geometry_.shape(1) = 1;
@@ -5159,18 +5159,18 @@ template<class T, class A>
 inline
 Matrix<T, A>::Matrix
 (
-    const InitializationSkipping& is, 
+    const InitializationSkipping& is,
     const size_t n1,
     const size_t n2,
     const CoordinateOrder& coordinateOrder,
     const allocator_type& allocator
-) 
+)
 : base(allocator)
 {
     if(n1 > 0 && n2 > 0) {
         size_t shape[2] = {n1, n2};
         this->data_ = this->dataAllocator_.allocate(n1 * n2);
-        base::base::assign(&shape[0], &shape[2], this->data_, 
+        base::base::assign(&shape[0], &shape[2], this->data_,
             coordinateOrder, coordinateOrder);
     }
     testInvariant();
@@ -5187,7 +5187,7 @@ inline
 Matrix<T, A>::Matrix
 (
     const ViewExpression<E, Te>& expression,
-    const allocator_type& allocator 
+    const allocator_type& allocator
 )
 : base(expression, allocator)
 {
@@ -5245,7 +5245,7 @@ Matrix<T, A>::operator=
     const View<TLocal, isConstLocal, ALocal>& in
 )
 {
-    marray_detail::Assert(MARRAY_NO_ARG_TEST || 
+    marray_detail::Assert(MARRAY_NO_ARG_TEST ||
         in.data_ != 0 || // empty
         (in.dimension() == 0 && in.size() == 1) || // scalar
         in.dimension() == 2);
@@ -5359,13 +5359,13 @@ Matrix<T, A>::reshape
 {
     marray_detail::Assert(MARRAY_NO_ARG_TEST || (n2 > 0 && n1 > 0));
     size_t shape[2] = {n1, n2};
-    base::reshape(&shape[0], &shape[2]); 
+    base::reshape(&shape[0], &shape[2]);
     testInvariant();
 }
 
 /// Invariant test.
 ///
-template<class T, class A> 
+template<class T, class A>
 inline void
 Matrix<T, A>::testInvariant() const
 {
@@ -5382,20 +5382,20 @@ public:
     typedef E expression_type;
     typedef T value_type;
 
-    const size_t dimension() const 
+    const size_t dimension() const
         { return static_cast<const E&>(*this).dimension(); }
-    const size_t size() const 
+    const size_t size() const
         { return static_cast<const E&>(*this).size(); }
-    const size_t shape(const size_t j) const 
+    const size_t shape(const size_t j) const
         { return static_cast<const E&>(*this).shape(j); }
-    const size_t* shapeBegin() const 
+    const size_t* shapeBegin() const
         { return static_cast<const E&>(*this).shapeBegin(); }
-    const size_t* shapeEnd() const 
+    const size_t* shapeEnd() const
         { return static_cast<const E&>(*this).shapeEnd(); }
-    template<class Tv, bool isConst, class A> 
+    template<class Tv, bool isConst, class A>
         bool overlaps(const View<Tv, isConst, A>& v) const
             { return static_cast<const E&>(*this).overlaps(v); }
-    const CoordinateOrder& coordinateOrder() const 
+    const CoordinateOrder& coordinateOrder() const
         { return static_cast<const E&>(*this).coordinateOrder(); }
     const bool isSimple() const
         { return static_cast<const E&>(*this).isSimple(); }
@@ -5404,17 +5404,17 @@ public:
             { return static_cast<const E&>(*this)(it); }
     const T& operator()(const size_t c0, const size_t c1) const
         { return static_cast<const E&>(*this)(c0, c1); }
-    const T& operator()(const size_t c0, const size_t c1, const size_t c2) const 
+    const T& operator()(const size_t c0, const size_t c1, const size_t c2) const
         { return static_cast<const E&>(*this)(c0, c1, c2); }
-    const T& operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const 
+    const T& operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const
         { return static_cast<const E&>(*this)(c0, c1, c2, c3); }
-    const T& operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const 
+    const T& operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const
         { return static_cast<const E&>(*this)(c0, c1, c2, c3, c4); }
     const T& operator[](const size_t offset) const
         { return static_cast<const E&>(*this)[offset]; }
-    operator E&() 
+    operator E&()
         { return static_cast<E&>(*this); }
-    operator E const&() const 
+    operator E const&() const
         { return static_cast<const E&>(*this); }
 
     // \cond suppress doxygen
@@ -5432,9 +5432,9 @@ public:
 
                          * (expression_.shape(coordinateIndex) - 1); }
         const T& operator*() const
-            { // return expression_[offset_]; 
+            { // return expression_[offset_];
               // would require making this nested class a friend of View
-              // which in turn would require a forward declaration of 
+              // which in turn would require a forward declaration of
               // this class. work around:
               return data_[offset_]; }
     private:
@@ -5447,8 +5447,8 @@ public:
 
 // \cond suppress doxygen
 template<class E, class T, class UnaryFunctor>
-class UnaryViewExpression 
-: public ViewExpression<UnaryViewExpression<E, T, UnaryFunctor>, T> 
+class UnaryViewExpression
+: public ViewExpression<UnaryViewExpression<E, T, UnaryFunctor>, T>
 {
 public:
     typedef E expression_type;
@@ -5456,22 +5456,22 @@ public:
 
     UnaryViewExpression(const ViewExpression<E, T>& e)
         : e_(e), // cast!
-          unaryFunctor_(UnaryFunctor()) 
+          unaryFunctor_(UnaryFunctor())
         {}
-    const size_t dimension() const 
+    const size_t dimension() const
         { return e_.dimension(); }
-    const size_t size() const 
+    const size_t size() const
         { return e_.size(); }
-    const size_t shape(const size_t j) const 
+    const size_t shape(const size_t j) const
         { return e_.shape(j); }
-    const size_t* shapeBegin() const 
+    const size_t* shapeBegin() const
         { return e_.shapeBegin(); }
-    const size_t* shapeEnd() const 
+    const size_t* shapeEnd() const
         { return e_.shapeEnd(); }
-    template<class Tv, bool isConst, class A> 
+    template<class Tv, bool isConst, class A>
         bool overlaps(const View<Tv, isConst, A>& v) const
             { return e_.overlaps(v); }
-    const CoordinateOrder& coordinateOrder() const 
+    const CoordinateOrder& coordinateOrder() const
         { return e_.coordinateOrder(); }
     const bool isSimple() const
         { return e_.isSimple(); }
@@ -5480,11 +5480,11 @@ public:
             { return unaryFunctor_(e_(it)); }
     const T operator()(const size_t c0, const size_t c1) const
         { return unaryFunctor_(e_(c0, c1)); }
-    const T operator()(const size_t c0, const size_t c1,const size_t c2) const 
+    const T operator()(const size_t c0, const size_t c1,const size_t c2) const
         { return unaryFunctor_(e_(c0, c1, c2)); }
-    const T operator()(const size_t c0, const size_t c1,const size_t c2, const size_t c3) const 
+    const T operator()(const size_t c0, const size_t c1,const size_t c2, const size_t c3) const
         { return unaryFunctor_(e_(c0, c1, c2, c3)); }
-    const T operator()(const size_t c0, const size_t c1,const size_t c2, const size_t c3, const size_t c4) const 
+    const T operator()(const size_t c0, const size_t c1,const size_t c2, const size_t c3, const size_t c4) const
         { return unaryFunctor_(e_(c0, c1, c2, c3, c4)); }
     const T operator[](const size_t offset) const
         { return unaryFunctor_(e_[offset]); }
@@ -5496,7 +5496,7 @@ public:
           iterator_(expression.e_)
             {}
         void incrementCoordinate(const size_t coordinateIndex)
-            { iterator_.incrementCoordinate(coordinateIndex); } 
+            { iterator_.incrementCoordinate(coordinateIndex); }
         void resetCoordinate(const size_t coordinateIndex)
             { iterator_.resetCoordinate(coordinateIndex); }
         const T operator*() const
@@ -5513,7 +5513,7 @@ private:
 
 template<class E1, class T1, class E2, class T2, class BinaryFunctor>
 class BinaryViewExpression
-: public ViewExpression<BinaryViewExpression<E1, T1, E2, T2, BinaryFunctor>, 
+: public ViewExpression<BinaryViewExpression<E1, T1, E2, T2, BinaryFunctor>,
                         typename marray_detail::PromoteType<T1, T2>::type>
 {
 public:
@@ -5523,13 +5523,13 @@ public:
     typedef T2 value_type_2;
     typedef typename marray_detail::PromoteType<T1, T2>::type value_type;
     typedef BinaryFunctor functor_type;
-    typedef ViewExpression<BinaryViewExpression<E1, T1, E2, T2, BinaryFunctor>, 
+    typedef ViewExpression<BinaryViewExpression<E1, T1, E2, T2, BinaryFunctor>,
         value_type> base;
 
-    BinaryViewExpression(const ViewExpression<E1, T1>& e1, 
-        const ViewExpression<E2, T2>& e2) 
+    BinaryViewExpression(const ViewExpression<E1, T1>& e1,
+        const ViewExpression<E2, T2>& e2)
         : e1_(e1), e2_(e2), // cast!
-          binaryFunctor_(BinaryFunctor()) 
+          binaryFunctor_(BinaryFunctor())
         {
             if(!MARRAY_NO_DEBUG) {
                 marray_detail::Assert(e1_.size() != 0 && e2_.size() != 0);
@@ -5539,34 +5539,34 @@ public:
                 }
             }
         }
-    const size_t dimension() const 
+    const size_t dimension() const
         { return e1_.dimension() < e2_.dimension() ? e2_.dimension() : e1_.dimension(); }
-    const size_t size() const 
+    const size_t size() const
         { return e1_.size() < e2_.size() ? e2_.size() : e1_.size(); }
-    const size_t shape(const size_t j) const 
+    const size_t shape(const size_t j) const
         { return e1_.dimension() < e2_.dimension() ? e2_.shape(j) : e1_.shape(j); }
-    const size_t* shapeBegin() const 
+    const size_t* shapeBegin() const
         { return e1_.dimension() < e2_.dimension() ? e2_.shapeBegin() : e1_.shapeBegin(); }
-    const size_t* shapeEnd() const 
+    const size_t* shapeEnd() const
         { return e1_.dimension() < e2_.dimension() ? e2_.shapeEnd() : e1_.shapeEnd(); }
-    template<class Tv, bool isConst, class A> 
+    template<class Tv, bool isConst, class A>
         bool overlaps(const View<Tv, isConst, A>& v) const
             { return e1_.overlaps(v) || e2_.overlaps(v); }
-    const CoordinateOrder& coordinateOrder() const 
+    const CoordinateOrder& coordinateOrder() const
         { return e1_.coordinateOrder(); }
     const bool isSimple() const
-        { return e1_.isSimple() && e2_.isSimple() 
+        { return e1_.isSimple() && e2_.isSimple()
                  && e1_.coordinateOrder() == e2_.coordinateOrder(); }
     template<class Accessor>
         const value_type operator()(Accessor it) const
             { return binaryFunctor_(e1_(it), e2_(it)); }
     const value_type operator()(const size_t c0, const size_t c1) const
         { return binaryFunctor_(e1_(c0, c1), e2_(c0, c1)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const
         { return binaryFunctor_(e1_(c0, c1, c2), e2_(c0, c1, c2)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const
         { return binaryFunctor_(e1_(c0, c1, c2, c3), e2_(c0, c1, c2, c3)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const
         { return binaryFunctor_(e1_(c0, c1, c2, c3, c4), e2_(c0, c1, c2, c3, c4)); }
     const value_type operator[](const size_t offset) const
         { return binaryFunctor_(e1_[offset], e2_[offset]); }
@@ -5575,14 +5575,14 @@ public:
     public:
         ExpressionIterator(const BinaryViewExpression<E1, T1, E2, T2, BinaryFunctor>& expression)
         : binaryFunctor_(expression.binaryFunctor_),
-          iterator1_(expression.e1_), 
+          iterator1_(expression.e1_),
           iterator2_(expression.e2_)
             {}
         void incrementCoordinate(const size_t coordinateIndex)
-            {   iterator1_.incrementCoordinate(coordinateIndex); 
+            {   iterator1_.incrementCoordinate(coordinateIndex);
                 iterator2_.incrementCoordinate(coordinateIndex); }
         void resetCoordinate(const size_t coordinateIndex)
-            {   iterator1_.resetCoordinate(coordinateIndex); 
+            {   iterator1_.resetCoordinate(coordinateIndex);
                 iterator2_.resetCoordinate(coordinateIndex); }
         const value_type operator*() const
             { return binaryFunctor_(*iterator1_, *iterator2_); }
@@ -5600,7 +5600,7 @@ private:
 
 template<class E, class T, class S, class BinaryFunctor>
 class BinaryViewExpressionScalarFirst
-: public ViewExpression<BinaryViewExpressionScalarFirst<E, T, S, BinaryFunctor>, 
+: public ViewExpression<BinaryViewExpressionScalarFirst<E, T, S, BinaryFunctor>,
                         typename marray_detail::PromoteType<T, S>::type> {
 public:
     typedef E expression_type;
@@ -5608,28 +5608,28 @@ public:
     typedef S scalar_type;
     typedef typename marray_detail::PromoteType<T, S>::type value_type;
     typedef BinaryFunctor functor_type;
-    typedef ViewExpression<BinaryViewExpressionScalarFirst<E, T, S, BinaryFunctor>, 
+    typedef ViewExpression<BinaryViewExpressionScalarFirst<E, T, S, BinaryFunctor>,
         value_type> base;
 
-    BinaryViewExpressionScalarFirst(const ViewExpression<E, T>& e, 
-        const scalar_type& scalar) 
+    BinaryViewExpressionScalarFirst(const ViewExpression<E, T>& e,
+        const scalar_type& scalar)
         : e_(e), // cast!
-          scalar_(scalar), binaryFunctor_(BinaryFunctor()) 
+          scalar_(scalar), binaryFunctor_(BinaryFunctor())
         { }
-    const size_t dimension() const 
+    const size_t dimension() const
         { return e_.dimension(); }
-    const size_t size() const 
+    const size_t size() const
         { return e_.size(); }
-    const size_t shape(const size_t j) const 
+    const size_t shape(const size_t j) const
         { return e_.shape(j); }
-    const size_t* shapeBegin() const 
+    const size_t* shapeBegin() const
         { return e_.shapeBegin(); }
-    const size_t* shapeEnd() const 
+    const size_t* shapeEnd() const
         { return e_.shapeEnd(); }
-    template<class Tv, bool isConst, class A> 
+    template<class Tv, bool isConst, class A>
         bool overlaps(const View<Tv, isConst, A>& v) const
             { return e_.overlaps(v); }
-    const CoordinateOrder& coordinateOrder() const 
+    const CoordinateOrder& coordinateOrder() const
         { return e_.coordinateOrder(); }
     const bool isSimple() const
         { return e_.isSimple(); }
@@ -5638,11 +5638,11 @@ public:
             { return binaryFunctor_(scalar_, e_(it)); }
     const value_type operator()(const size_t c0, const size_t c1) const
         { return binaryFunctor_(scalar_, e_(c0, c1)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const
         { return binaryFunctor_(scalar_, e_(c0, c1, c2)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const
         { return binaryFunctor_(scalar_, e_(c0, c1, c2, c3)); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const
         { return binaryFunctor_(scalar_, e_(c0, c1, c2, c3, c4)); }
     const value_type operator[](const size_t offset) const
         { return binaryFunctor_(scalar_, e_[offset]); }
@@ -5674,7 +5674,7 @@ private:
 
 template<class E, class T, class S, class BinaryFunctor>
 class BinaryViewExpressionScalarSecond
-: public ViewExpression<BinaryViewExpressionScalarSecond<E, T, S, BinaryFunctor>, 
+: public ViewExpression<BinaryViewExpressionScalarSecond<E, T, S, BinaryFunctor>,
                         typename marray_detail::PromoteType<T, S>::type> {
 public:
     typedef T value_type_1;
@@ -5682,28 +5682,28 @@ public:
     typedef S scalar_type;
     typedef typename marray_detail::PromoteType<T, S>::type value_type;
     typedef BinaryFunctor functor_type;
-    typedef ViewExpression<BinaryViewExpressionScalarSecond<E, T, S, BinaryFunctor>, 
+    typedef ViewExpression<BinaryViewExpressionScalarSecond<E, T, S, BinaryFunctor>,
         value_type> base;
 
-    BinaryViewExpressionScalarSecond(const ViewExpression<E, T>& e, 
-        const scalar_type& scalar) 
+    BinaryViewExpressionScalarSecond(const ViewExpression<E, T>& e,
+        const scalar_type& scalar)
         : e_(e), // cast!
           scalar_(scalar), binaryFunctor_(BinaryFunctor())
         { }
-    const size_t dimension() const 
+    const size_t dimension() const
         { return e_.dimension(); }
-    const size_t size() const 
+    const size_t size() const
         { return e_.size(); }
-    const size_t shape(const size_t j) const 
+    const size_t shape(const size_t j) const
         { return e_.shape(j); }
-    const size_t* shapeBegin() const 
+    const size_t* shapeBegin() const
         { return e_.shapeBegin(); }
-    const size_t* shapeEnd() const 
+    const size_t* shapeEnd() const
         { return e_.shapeEnd(); }
-    template<class Tv, bool isConst, class A> 
+    template<class Tv, bool isConst, class A>
         bool overlaps(const View<Tv, isConst, A>& v) const
             { return e_.overlaps(v); }
-    const CoordinateOrder& coordinateOrder() const 
+    const CoordinateOrder& coordinateOrder() const
         { return e_.coordinateOrder(); }
     const bool isSimple() const
         { return e_.isSimple(); }
@@ -5712,11 +5712,11 @@ public:
             { return binaryFunctor_(e_(it), scalar_); }
     const value_type operator()(const size_t c0, const size_t c1) const
         { return binaryFunctor_(e_(c0, c1), scalar_); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2) const
         { return binaryFunctor_(e_(c0, c1, c2), scalar_); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3) const
         { return binaryFunctor_(e_(c0, c1, c2, c3), scalar_); }
-    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const 
+    const value_type operator()(const size_t c0, const size_t c1, const size_t c2, const size_t c3, const size_t c4) const
         { return binaryFunctor_(e_(c0, c1, c2, c3, c4), scalar_); }
     const value_type operator[](const size_t offset) const
         { return binaryFunctor_(e_[offset], scalar_); }
@@ -5747,20 +5747,20 @@ private:
 };
 // \endcond suppress doxygen
 
-// implementation of marray_detail 
+// implementation of marray_detail
 
 // \cond suppress doxygen
-namespace marray_detail { 
+namespace marray_detail {
 
 template<class A>
-class Geometry 
+class Geometry
 {
 public:
     typedef typename A::template rebind<size_t>::other allocator_type;
 
     Geometry(const allocator_type& = allocator_type());
     Geometry(const size_t, const CoordinateOrder& = defaultOrder,
-        const size_t = 0, const bool = true, 
+        const size_t = 0, const bool = true,
         const allocator_type& = allocator_type());
     template<class ShapeIterator>
         Geometry(ShapeIterator, ShapeIterator,
@@ -5769,7 +5769,7 @@ public:
             const allocator_type& = allocator_type());
     template<class ShapeIterator, class StrideIterator>
         Geometry(ShapeIterator, ShapeIterator, StrideIterator,
-            const CoordinateOrder& = defaultOrder, 
+            const CoordinateOrder& = defaultOrder,
             const allocator_type& = allocator_type());
     Geometry(const Geometry<A>&);
     ~Geometry();
@@ -5805,7 +5805,7 @@ public:
     bool& isSimple();
 
 private:
-    allocator_type allocator_;  
+    allocator_type allocator_;
     size_t* shape_;
     size_t* shapeStrides_;
         // Intended redundancy: shapeStrides_ could be
@@ -5815,42 +5815,42 @@ private:
     size_t size_;
         // intended redundancy: size_ could be computed from shape_
     CoordinateOrder coordinateOrder_;
-    bool isSimple_; 
+    bool isSimple_;
         // simple array: an array which is unstrided (i.e. the strides
-        // equal the shape strides), cf. the function testInvariant of 
+        // equal the shape strides), cf. the function testInvariant of
         // View for the formal definition.
 };
 
 template<class A>
-inline 
+inline
 Geometry<A>::Geometry
 (
     const typename Geometry<A>::allocator_type& allocator
-) 
+)
 : allocator_(allocator),
-  shape_(0), 
-  shapeStrides_(0), 
-  strides_(0), 
+  shape_(0),
+  shapeStrides_(0),
+  strides_(0),
   dimension_(0),
-  size_(0), 
-  coordinateOrder_(defaultOrder), 
+  size_(0),
+  coordinateOrder_(defaultOrder),
   isSimple_(true)
 {
 }
 
 template<class A>
-inline 
+inline
 Geometry<A>::Geometry
 (
     const Geometry<A>& g
 )
 : allocator_(g.allocator_),
-  shape_(g.dimension_==0 ? 0 : allocator_.allocate(g.dimension_*3)), 
-  shapeStrides_(shape_ + g.dimension_), 
-  strides_(shapeStrides_ + g.dimension_), 
+  shape_(g.dimension_==0 ? 0 : allocator_.allocate(g.dimension_*3)),
+  shapeStrides_(shape_ + g.dimension_),
+  strides_(shapeStrides_ + g.dimension_),
   dimension_(g.dimension_),
-  size_(g.size_), 
-  coordinateOrder_(g.coordinateOrder_), 
+  size_(g.size_),
+  coordinateOrder_(g.coordinateOrder_),
   isSimple_(g.isSimple_)
 {
     /*
@@ -5864,7 +5864,7 @@ Geometry<A>::Geometry
 }
 
 template<class A>
-inline 
+inline
 Geometry<A>::Geometry
 (
     const size_t dimension,
@@ -5874,9 +5874,9 @@ Geometry<A>::Geometry
     const typename Geometry<A>::allocator_type& allocator
 )
 : allocator_(allocator),
-  shape_(allocator_.allocate(dimension*3)), 
+  shape_(allocator_.allocate(dimension*3)),
   shapeStrides_(shape_+dimension),
-  strides_(shapeStrides_+dimension), 
+  strides_(shapeStrides_+dimension),
   dimension_(dimension),
   size_(size),
   coordinateOrder_(order),
@@ -5886,19 +5886,19 @@ Geometry<A>::Geometry
 
 template<class A>
 template<class ShapeIterator>
-inline 
+inline
 Geometry<A>::Geometry
 (
-    ShapeIterator begin, 
+    ShapeIterator begin,
     ShapeIterator end,
     const CoordinateOrder& externalCoordinateOrder,
     const CoordinateOrder& internalCoordinateOrder,
     const typename Geometry<A>::allocator_type& allocator
 )
 : allocator_(allocator),
-  shape_(allocator_.allocate(std::distance(begin, end) * 3)), 
+  shape_(allocator_.allocate(std::distance(begin, end) * 3)),
   shapeStrides_(shape_ + std::distance(begin, end)),
-  strides_(shapeStrides_ + std::distance(begin, end)), 
+  strides_(shapeStrides_ + std::distance(begin, end)),
   dimension_(std::distance(begin, end)),
   size_(1),
   coordinateOrder_(internalCoordinateOrder),
@@ -5911,9 +5911,9 @@ Geometry<A>::Geometry
             shape(j) = s;
             size() *= s;
         }
-        stridesFromShape(shapeBegin(), shapeEnd(), stridesBegin(), 
+        stridesFromShape(shapeBegin(), shapeEnd(), stridesBegin(),
             externalCoordinateOrder);
-        stridesFromShape(shapeBegin(), shapeEnd(), shapeStridesBegin(), 
+        stridesFromShape(shapeBegin(), shapeEnd(), shapeStridesBegin(),
             internalCoordinateOrder);
     }
 }
@@ -5923,16 +5923,16 @@ template<class ShapeIterator, class StrideIterator>
 inline
 Geometry<A>::Geometry
 (
-    ShapeIterator begin, 
+    ShapeIterator begin,
     ShapeIterator end,
     StrideIterator it,
     const CoordinateOrder& internalCoordinateOrder,
     const typename Geometry<A>::allocator_type& allocator
 )
 : allocator_(allocator),
-  shape_(allocator_.allocate(std::distance(begin, end) * 3)), 
+  shape_(allocator_.allocate(std::distance(begin, end) * 3)),
   shapeStrides_(shape_ + std::distance(begin, end)),
-  strides_(shapeStrides_ + std::distance(begin, end)), 
+  strides_(shapeStrides_ + std::distance(begin, end)),
   dimension_(std::distance(begin, end)),
   size_(1),
   coordinateOrder_(internalCoordinateOrder),
@@ -5945,21 +5945,21 @@ Geometry<A>::Geometry
             size() *= s;
             strides(j) = *it;
         }
-        stridesFromShape(shapeBegin(), shapeEnd(), shapeStridesBegin(), 
+        stridesFromShape(shapeBegin(), shapeEnd(), shapeStridesBegin(),
             internalCoordinateOrder);
         updateSimplicity();
     }
 }
 
 template<class A>
-inline 
+inline
 Geometry<A>::~Geometry()
 {
-    allocator_.deallocate(shape_, dimension_*3); 
+    allocator_.deallocate(shape_, dimension_*3);
 }
 
 template<class A>
-inline Geometry<A>& 
+inline Geometry<A>&
 Geometry<A>::operator=
 (
     const Geometry<A>& g
@@ -5990,7 +5990,7 @@ Geometry<A>::operator=
 }
 
 template<class A>
-inline void 
+inline void
 Geometry<A>::resize
 (
     const size_t dimension
@@ -5999,7 +5999,7 @@ Geometry<A>::resize
     if(dimension != dimension_) {
         size_t* newShape = allocator_.allocate(dimension*3);
         size_t* newShapeStrides = newShape + dimension;
-        size_t* newStrides = newShapeStrides + dimension; 
+        size_t* newStrides = newShapeStrides + dimension;
         for(size_t j=0; j<( (dimension < dimension_) ? dimension : dimension_); ++j) {
             // save existing entries
             newShape[j] = shape(j);
@@ -6015,221 +6015,221 @@ Geometry<A>::resize
 }
 
 template<class A>
-inline const size_t 
+inline const size_t
 Geometry<A>::dimension() const
 {
-    return dimension_; 
+    return dimension_;
 }
 
 template<class A>
-inline const size_t 
+inline const size_t
 Geometry<A>::shape(const size_t j) const
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return shape_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return shape_[j];
 }
 
 template<class A>
-inline size_t& 
+inline size_t&
 Geometry<A>::shape(const size_t j)
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return shape_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return shape_[j];
 }
 
 template<class A>
-inline const size_t 
+inline const size_t
 Geometry<A>::shapeStrides
 (
     const size_t j
 ) const
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return shapeStrides_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return shapeStrides_[j];
 }
 
 template<class A>
-inline size_t& 
+inline size_t&
 Geometry<A>::shapeStrides
 (
     const size_t j
 )
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return shapeStrides_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return shapeStrides_[j];
 }
 
 template<class A>
-inline const size_t 
+inline const size_t
 Geometry<A>::strides
 (
     const size_t j
 ) const
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return strides_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return strides_[j];
 }
 
 template<class A>
-inline size_t& 
+inline size_t&
 Geometry<A>::strides
 (
     const size_t j
 )
-{ 
-    Assert(MARRAY_NO_DEBUG || j<dimension_); 
-    return strides_[j]; 
+{
+    Assert(MARRAY_NO_DEBUG || j<dimension_);
+    return strides_[j];
 }
 
 template<class A>
-inline const size_t* 
+inline const size_t*
 Geometry<A>::shapeBegin() const
-{ 
-    return shape_; 
+{
+    return shape_;
 }
 
 template<class A>
-inline size_t* 
+inline size_t*
 Geometry<A>::shapeBegin()
-{ 
-    return shape_; 
+{
+    return shape_;
 }
 
 template<class A>
-inline const size_t* 
-Geometry<A>::shapeEnd() const 
-{ 
-    return shape_ + dimension_; 
+inline const size_t*
+Geometry<A>::shapeEnd() const
+{
+    return shape_ + dimension_;
 }
 
 template<class A>
-inline size_t* 
-Geometry<A>::shapeEnd() 
-{ 
-    return shape_ + dimension_; 
+inline size_t*
+Geometry<A>::shapeEnd()
+{
+    return shape_ + dimension_;
 }
 
 template<class A>
-inline const size_t* 
-Geometry<A>::shapeStridesBegin() const 
-{ 
-    return shapeStrides_; 
+inline const size_t*
+Geometry<A>::shapeStridesBegin() const
+{
+    return shapeStrides_;
 }
 
 template<class A>
-inline size_t* 
-Geometry<A>::shapeStridesBegin() 
-{ 
-    return shapeStrides_; 
+inline size_t*
+Geometry<A>::shapeStridesBegin()
+{
+    return shapeStrides_;
 }
 
 template<class A>
-inline const size_t* 
-Geometry<A>::shapeStridesEnd() const 
-{ 
-    return shapeStrides_ + dimension_; 
+inline const size_t*
+Geometry<A>::shapeStridesEnd() const
+{
+    return shapeStrides_ + dimension_;
 }
 
 template<class A>
-inline size_t* 
-Geometry<A>::shapeStridesEnd() 
-{ 
-    return shapeStrides_ + dimension_; 
+inline size_t*
+Geometry<A>::shapeStridesEnd()
+{
+    return shapeStrides_ + dimension_;
 }
 
 template<class A>
-inline const size_t* 
-Geometry<A>::stridesBegin() const 
-{ 
-    return strides_; 
+inline const size_t*
+Geometry<A>::stridesBegin() const
+{
+    return strides_;
 }
 
 template<class A>
-inline size_t* 
-Geometry<A>::stridesBegin() 
-{ 
-    return strides_; 
+inline size_t*
+Geometry<A>::stridesBegin()
+{
+    return strides_;
 }
 
 template<class A>
-inline const size_t* 
-Geometry<A>::stridesEnd() const 
-{ 
-    return strides_ + dimension_; 
+inline const size_t*
+Geometry<A>::stridesEnd() const
+{
+    return strides_ + dimension_;
 }
 
 template<class A>
-inline size_t* 
-Geometry<A>::stridesEnd() 
-{ 
-    return strides_ + dimension_; 
+inline size_t*
+Geometry<A>::stridesEnd()
+{
+    return strides_ + dimension_;
 }
 
 template<class A>
-inline const size_t 
+inline const size_t
 Geometry<A>::size() const
-{ 
-    return size_; 
+{
+    return size_;
 }
 
 template<class A>
-inline size_t& 
+inline size_t&
 Geometry<A>::size()
-{ 
-    return size_; 
+{
+    return size_;
 }
 
 template<class A>
-inline const CoordinateOrder& 
+inline const CoordinateOrder&
 Geometry<A>::coordinateOrder() const
-{ 
-    return coordinateOrder_; 
+{
+    return coordinateOrder_;
 }
 
 template<class A>
-inline CoordinateOrder& 
+inline CoordinateOrder&
 Geometry<A>::coordinateOrder()
-{ 
-    return coordinateOrder_; 
+{
+    return coordinateOrder_;
 }
 
 template<class A>
-inline const bool 
-Geometry<A>::isSimple() const 
-{ 
-    return isSimple_; 
+inline const bool
+Geometry<A>::isSimple() const
+{
+    return isSimple_;
 }
 
 template<class A>
-inline bool& 
+inline bool&
 Geometry<A>::isSimple()
-{ 
-    return isSimple_; 
+{
+    return isSimple_;
 }
 
 template<class A>
 inline void
 Geometry<A>::updateSimplicity()
-{ 
+{
     for(size_t j=0; j<dimension(); ++j) {
         if(shapeStrides(j) != strides(j)) {
             isSimple_ = false;
             return;
         }
     }
-    isSimple_ = true; 
+    isSimple_ = true;
     // a 0-dimensional geometry is simple
 }
 
 template<class ShapeIterator, class StridesIterator>
-inline void 
+inline void
 stridesFromShape
 (
     ShapeIterator begin,
     ShapeIterator end,
     StridesIterator strideBegin,
     const CoordinateOrder& coordinateOrder
-) 
+)
 {
     Assert(MARRAY_NO_ARG_TEST || std::distance(begin, end) != 0);
     size_t dimension = std::distance(begin, end);
@@ -6264,8 +6264,8 @@ struct OperateHelperUnary
 {
     static inline void operate
     (
-        View<T, false, A>& v, 
-        Functor f, 
+        View<T, false, A>& v,
+        Functor f,
         T* data
     )
     {
@@ -6283,12 +6283,12 @@ struct OperateHelperUnary<0, Functor, T, A>
 {
     static inline void operate
     (
-        View<T, false, A>& v, 
-        Functor f, 
+        View<T, false, A>& v,
+        Functor f,
         T* data
     )
-    { 
-        f(*data); 
+    {
+        f(*data);
     }
 };
 
@@ -6297,9 +6297,9 @@ struct OperateHelperBinaryScalar
 {
     static inline void operate
     (
-        View<T1, false, A>& v, 
-        const T2& x, 
-        Functor f, 
+        View<T1, false, A>& v,
+        const T2& x,
+        Functor f,
         T1* data
     )
     {
@@ -6317,25 +6317,25 @@ struct OperateHelperBinaryScalar<0, Functor, T1, T2, A>
 {
     static inline void operate
     (
-        View<T1, false, A>& v, 
-        const T2& x, 
-        Functor f, 
+        View<T1, false, A>& v,
+        const T2& x,
+        Functor f,
         T1* data
     )
-    { 
-        f(*data, x); 
+    {
+        f(*data, x);
     }
 };
 
-template<unsigned short N, class Functor, class T1, class T2, 
+template<unsigned short N, class Functor, class T1, class T2,
          bool isConst, class A1, class A2>
 struct OperateHelperBinary
 {
     static inline void operate
     (
-        View<T1, false, A1>& v, 
-        const View<T2, isConst, A2>& w, 
-        Functor f, 
+        View<T1, false, A1>& v,
+        const View<T2, isConst, A2>& w,
+        Functor f,
         T1* data1,
         const T2* data2
     )
@@ -6356,25 +6356,25 @@ struct OperateHelperBinary<0, Functor, T1, T2, isConst, A1, A2>
 {
     static inline void operate
     (
-        View<T1, false, A1>& v, 
-        const View<T2, isConst, A2>& w, 
-        Functor f, 
+        View<T1, false, A1>& v,
+        const View<T2, isConst, A2>& w,
+        Functor f,
         T1* data1,
         const T2* data2
     )
     {
-        f(*data1, *data2); 
+        f(*data1, *data2);
     }
 };
 
-template<class TFrom, class TTo, class AFrom, class ATo> 
+template<class TFrom, class TTo, class AFrom, class ATo>
 struct AssignmentOperatorHelper<false, TFrom, TTo, AFrom, ATo>
 {
-    // from constant to mutable 
+    // from constant to mutable
     //
     // here, 'to' must be initialized (which is asserted) because
-    // otherwise, the pointer to.data_ to mutable data would have 
-    // to be initialized with the pointer from.data_ to constant 
+    // otherwise, the pointer to.data_ to mutable data would have
+    // to be initialized with the pointer from.data_ to constant
     // data which we don't do.
     //
     static void execute
@@ -6395,7 +6395,7 @@ struct AssignmentOperatorHelper<false, TFrom, TTo, AFrom, ATo>
             Marray<TFrom, AFrom> m = from; // temporary copy
             execute(m, to);
         }
-        else if(from.coordinateOrder() == to.coordinateOrder() 
+        else if(from.coordinateOrder() == to.coordinateOrder()
                 && from.isSimple() && to.isSimple()
                 && IsEqual<TFrom, TTo>::type) {
             memcpy(to.data_, from.data_, (from.size())*sizeof(TFrom));
@@ -6459,7 +6459,7 @@ struct AssignmentOperatorHelper<false, TFrom, TTo, AFrom, ATo>
                     Marray<TFrom, AFrom> m = from; // temporary copy
                     execute(m, to);
                 }
-                else if(from.coordinateOrder() == to.coordinateOrder() 
+                else if(from.coordinateOrder() == to.coordinateOrder()
                         && from.isSimple() && to.isSimple()
                         && IsEqual<TFrom, TTo>::type) {
                     memcpy(to.data_, from.data_, (from.size())*sizeof(TFrom));
@@ -6496,7 +6496,7 @@ struct AssignmentOperatorHelper<false, TFrom, TTo, AFrom, ATo>
     }
 };
 
-template<class TFrom, class TTo, class AFrom, class ATo> 
+template<class TFrom, class TTo, class AFrom, class ATo>
 struct AssignmentOperatorHelper<true, TFrom, TTo, AFrom, ATo>
 {
     /// from either constant or mutable to constant
@@ -6549,10 +6549,10 @@ struct AccessOperatorHelper<false>
 };
 
 template<class Functor, class T, class A>
-inline void 
+inline void
 operate
 (
-    View<T, false, A>& v, 
+    View<T, false, A>& v,
     Functor f
 )
 {
@@ -6590,11 +6590,11 @@ operate
 }
 
 template<class Functor, class T, class A>
-inline void 
+inline void
 operate
 (
-    View<T, false, A>& v, 
-    const T& x, 
+    View<T, false, A>& v,
+    const T& x,
     Functor f
 )
 {
@@ -6626,17 +6626,17 @@ operate
         OperateHelperBinaryScalar<10, Functor, T, T, A>::operate(v, x, f, &v(0));
     else {
         for(typename View<T, false, A>::iterator it = v.begin(); it.hasMore(); ++it) {
-            f(*it, x); 
+            f(*it, x);
         }
     }
 }
 
 template<class Functor, class T1, class T2, bool isConst, class A>
-inline void 
+inline void
 operate
 (
-    View<T1, false, A>& v, 
-    const View<T2, isConst, A>& w, 
+    View<T1, false, A>& v,
+    const View<T2, isConst, A>& w,
     Functor f
 )
 {
@@ -6689,7 +6689,7 @@ operate
             operate(v, m, f); // recursive call
         }
         else {
-            if(v.coordinateOrder() == w.coordinateOrder() 
+            if(v.coordinateOrder() == w.coordinateOrder()
                 && v.isSimple() && w.isSimple()) {
                 T1* dataV = &v(0);
                 const T2* dataW = &w(0);
@@ -6733,8 +6733,8 @@ operate
 template<class Functor, class T1, class A, class E, class T2>
 inline void operate
 (
-    View<T1, false, A>& v, 
-    const ViewExpression<E, T2>& expression, 
+    View<T1, false, A>& v,
+    const ViewExpression<E, T2>& expression,
     Functor f
 )
 {
@@ -6758,7 +6758,7 @@ inline void operate
     else if(v.dimension() == 0) {
         f(v[0], e[0]);
     }
-    else if(v.isSimple() && e.isSimple() 
+    else if(v.isSimple() && e.isSimple()
     && v.coordinateOrder() == e.coordinateOrder()) {
         for(size_t j=0; j<v.size(); ++j) {
             f(v[j], e[j]);
