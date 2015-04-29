@@ -624,68 +624,45 @@ DecisionTree<FEATURE, LABEL>::learn(
         size_t nodeIndexNew;
         size_t thresholdIndexNew;
 
-        // learn left child node and put on queue
-        nodeIndexNew = decisionNodes_.size();
-        decisionNodes_.push_back(DecisionNodeType());
-        thresholdIndexNew = decisionNodes_.back().learn(
-            features,
-            labels,
-            sampleIndices,
-            sampleIndexBegin, thresholdIndex,
-            randomEngine
-        );
-        #ifndef NDEBUG
-        if(decisionNodes_[nodeIndexNew].isLeaf()) {
-            assert(thresholdIndexNew == 0);
-        }
-        else {
-            assert(
-                thresholdIndexNew >= sampleIndexBegin
-                && thresholdIndexNew < thresholdIndex
-            );
-        }
-        #endif
-        decisionNodes_[nodeIndex].childNodeIndex(0) = nodeIndexNew;
-        if(!decisionNodes_[nodeIndexNew].isLeaf()) { // if not pure
-            queue.push(
-                TreeConstructionQueueEntry(
-                    nodeIndexNew,
-                    sampleIndexBegin, thresholdIndex,
-                    thresholdIndexNew
-                )
-            );
-        }
+        size_t begin = sampleIndexBegin;
+        size_t end = thresholdIndex;
 
-        // learn right child node and put on queue
-        nodeIndexNew = decisionNodes_.size();
-        decisionNodes_.push_back(DecisionNodeType());
-        thresholdIndexNew = decisionNodes_.back().learn(
-            features,
-            labels,
-            sampleIndices,
-            thresholdIndex, sampleIndexEnd,
-            randomEngine
-        );
-        #ifndef NDEBUG
-        if(decisionNodes_[nodeIndexNew].isLeaf()) {
-            assert(thresholdIndexNew == 0);
-        }
-        else {
-            assert(
-                thresholdIndexNew >= thresholdIndex
-                && thresholdIndexNew < sampleIndexEnd
+        for(size_t child = 0; child < 2; ++child) {
+            // learn child node and put on queue
+            nodeIndexNew = decisionNodes_.size();
+            decisionNodes_.push_back(DecisionNodeType());
+            thresholdIndexNew = decisionNodes_.back().learn(
+                features,
+                labels,
+                sampleIndices,
+                begin, end,
+                randomEngine
             );
-        }
-        #endif
-        decisionNodes_[nodeIndex].childNodeIndex(1) = nodeIndexNew;
-        if(!decisionNodes_[nodeIndexNew].isLeaf()) { // if not pure
-            queue.push(
-                TreeConstructionQueueEntry(
-                    nodeIndexNew,
-                    thresholdIndex, sampleIndexEnd,
-                    thresholdIndexNew
-                )
-            );
+            #ifndef NDEBUG
+            if(decisionNodes_[nodeIndexNew].isLeaf()) {
+                assert(thresholdIndexNew == 0);
+            }
+            else {
+                assert(
+                    thresholdIndexNew >= begin
+                    && thresholdIndexNew < end
+                );
+            }
+            #endif
+            decisionNodes_[nodeIndex].childNodeIndex(child) = nodeIndexNew;
+            if(!decisionNodes_[nodeIndexNew].isLeaf()) { // if not pure
+                queue.push(
+                    TreeConstructionQueueEntry(
+                        nodeIndexNew,
+                        begin, end,
+                        thresholdIndexNew
+                    )
+                );
+            }
+
+            // change parameters for right child
+            begin = thresholdIndex;
+            end = sampleIndexEnd;
         }
     }
 }
