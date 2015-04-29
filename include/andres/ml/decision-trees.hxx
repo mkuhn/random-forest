@@ -116,7 +116,7 @@ private:
     template<class RandomEngine>
         void sampleSubsetWithoutReplacement(const size_t, const size_t,
             std::vector<size_t>&, RandomEngine&,
-            std::vector<size_t>& = std::vector<size_t>()
+            std::vector<size_t>&
         );
 
     size_t featureIndex_;
