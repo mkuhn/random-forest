@@ -5,14 +5,30 @@
 #include "andres/marray.hxx"
 #include "andres/ml/decision-trees.hxx"
 
-inline void test(const bool& x) { 
-    if(!x) throw std::logic_error("test failed."); 
+inline void test(const bool& x) {
+    if(!x) throw std::logic_error("test failed.");
+}
+
+template<class T>
+void
+printLiteral2D(andres::Marray<T> arr, const size_t shape[]) {
+    std::cout << "{";
+    for(size_t i = 0; i < shape[0]; ++i) {
+        if (i) std::cout << ",";
+        std::cout << "{";
+        for(size_t j = 0; j < shape[1]; ++j) {
+            if (j) std::cout << ",";
+            std::cout << arr(i, j);
+        }
+        std::cout << "}";
+    }
+    std::cout << "}; " << std::endl;
 }
 
 int main() {
     const size_t numberOfSamples = 100;
     const size_t numberOfFeatures = 2;
-    
+
     // define random feature matrix
     std::default_random_engine RandomNumberGenerator;
     typedef double Feature;
@@ -48,5 +64,17 @@ int main() {
     decisionForest.predict(features, probabilities);
     // TODO: test formally
 
+    // printLiteral2D(probabilities, shape);
+    
+    const Probability reference[numberOfSamples][numberOfFeatures] = {{0.1,0.9},{0.8,0.2},{1,0},{0.9,0.1},{0.9,0.1},{0.1,0.9},{0.9,0.1},{0.8,0.2},{1,0},{0,1},{0.2,0.8},{0.4,0.6},{0.6,0.4},{0.4,0.6},{0.2,0.8},{0.9,0.1},{1,0},{0.7,0.3},{0,1},{1,0},{1,0},{1,0},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.2,0.8},{0.9,0.1},{0.9,0.1},{0.7,0.3},{0.4,0.6},{1,0},{0.3,0.7},{0.3,0.7},{0.9,0.1},{0.3,0.7},{0.3,0.7},{0.7,0.3},{0.7,0.3},{0.9,0.1},{0,1},{0.2,0.8},{0.8,0.2},{0.9,0.1},{0.7,0.3},{1,0},{0.1,0.9},{0,1},{0.7,0.3},{0.9,0.1},{1,0},{0.2,0.8},{0.9,0.1},{0.1,0.9},{0.7,0.3},{0.8,0.2},{0.1,0.9},{0.9,0.1},{1,0},{0.8,0.2},{0,1},{0.8,0.2},{0.9,0.1},{0.6,0.4},{0.8,0.2},{0.9,0.1},{0.3,0.7},{0.6,0.4},{0.2,0.8},{0.7,0.3},{0.3,0.7},{0.2,0.8},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.8,0.2},{0.7,0.3},{0.1,0.9},{0.1,0.9},{0.4,0.6},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.8,0.2},{0.7,0.3},{0.8,0.2},{0.4,0.6},{0.9,0.1},{0.2,0.8},{1,0},{0.2,0.8},{0.9,0.1},{0.8,0.2},{0.6,0.4},{0.1,0.9},{0.9,0.1},{0.9,0.1},{1,0},{0.2,0.8},{1,0}};
+
+    for(size_t i = 0; i < shape[0]; ++i) {
+        for(size_t j = 0; j < shape[1]; ++j) {
+            test( probabilities(i, j) == reference[i][j] );
+        }
+    }
+
+    
+    
     return 0;
 }
