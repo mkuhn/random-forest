@@ -1,2 +1,13 @@
-CMakeLists.txt.user
-
+.*
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Debug/
+Makefile
+cmake_install.cmake
+doc-ml
+doxyfile-ml-decision-trees
+ml.build/
+ml.xcodeproj/
+*sublime*
+test-decision-trees
