@@ -28,12 +28,14 @@ printLiteral2D(andres::Marray<T> arr, const size_t shape[]) {
 int main() {
     const size_t numberOfSamples = 100;
     const size_t numberOfFeatures = 2;
-
+    const size_t numberOfLabels = 2;
+    
     // define random feature matrix
     std::default_random_engine RandomNumberGenerator;
     typedef double Feature;
     std::uniform_real_distribution<double> randomDistribution(0.0, 1.0);
     const size_t shape[] = {numberOfSamples, numberOfFeatures};
+    const size_t label_shape[] = {numberOfSamples, numberOfLabels};
     andres::Marray<Feature> features(shape, shape + 2);
     for(size_t sample = 0; sample < numberOfSamples; ++sample)
     for(size_t feature = 0; feature < numberOfFeatures; ++feature) {
@@ -57,19 +59,19 @@ int main() {
     typedef double Probability;
     andres::ml::DecisionForest<Feature, Label, Probability> decisionForest;
     const size_t numberOfDecisionTrees = 10;
-    decisionForest.learn(features, labels, numberOfDecisionTrees);
+    decisionForest.learn(features, labels, numberOfLabels, numberOfDecisionTrees);
 
     // predict probabilities for every label and every training sample
-    andres::Marray<Probability> probabilities(shape, shape + 2);
+    andres::Marray<Probability> probabilities(label_shape, label_shape + 2);
     decisionForest.predict(features, probabilities);
     // TODO: test formally
 
-    // printLiteral2D(probabilities, shape);
+    // printLiteral2D(probabilities, label_shape);
     
     const Probability reference[numberOfSamples][numberOfFeatures] = {{0.1,0.9},{0.8,0.2},{1,0},{0.9,0.1},{0.9,0.1},{0.1,0.9},{0.9,0.1},{0.8,0.2},{1,0},{0,1},{0.2,0.8},{0.4,0.6},{0.6,0.4},{0.4,0.6},{0.2,0.8},{0.9,0.1},{1,0},{0.7,0.3},{0,1},{1,0},{1,0},{1,0},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.2,0.8},{0.9,0.1},{0.9,0.1},{0.7,0.3},{0.4,0.6},{1,0},{0.3,0.7},{0.3,0.7},{0.9,0.1},{0.3,0.7},{0.3,0.7},{0.7,0.3},{0.7,0.3},{0.9,0.1},{0,1},{0.2,0.8},{0.8,0.2},{0.9,0.1},{0.7,0.3},{1,0},{0.1,0.9},{0,1},{0.7,0.3},{0.9,0.1},{1,0},{0.2,0.8},{0.9,0.1},{0.1,0.9},{0.7,0.3},{0.8,0.2},{0.1,0.9},{0.9,0.1},{1,0},{0.8,0.2},{0,1},{0.8,0.2},{0.9,0.1},{0.6,0.4},{0.8,0.2},{0.9,0.1},{0.3,0.7},{0.6,0.4},{0.2,0.8},{0.7,0.3},{0.3,0.7},{0.2,0.8},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.8,0.2},{0.7,0.3},{0.1,0.9},{0.1,0.9},{0.4,0.6},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.8,0.2},{0.7,0.3},{0.8,0.2},{0.4,0.6},{0.9,0.1},{0.2,0.8},{1,0},{0.2,0.8},{0.9,0.1},{0.8,0.2},{0.6,0.4},{0.1,0.9},{0.9,0.1},{0.9,0.1},{1,0},{0.2,0.8},{1,0}};
 
-    for(size_t i = 0; i < shape[0]; ++i) {
-        for(size_t j = 0; j < shape[1]; ++j) {
+    for(size_t i = 0; i < label_shape[0]; ++i) {
+        for(size_t j = 0; j < label_shape[1]; ++j) {
             test( probabilities(i, j) == reference[i][j] );
         }
     }

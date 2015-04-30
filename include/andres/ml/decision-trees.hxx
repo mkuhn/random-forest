@@ -84,7 +84,7 @@ public:
     Label label() const;
     Label& label();
     template<class RandomEngine>
-        size_t learn(const andres::View<Feature>&, const andres::View<Label>&,
+        size_t learn(const andres::View<Feature>&, const andres::View<Label>&, const size_t,
             std::vector<size_t>&, const size_t, const size_t, RandomEngine&);
 
 private:
@@ -136,13 +136,13 @@ public:
 
     DecisionTree();
     size_t size() const; // number of decision nodes
-    void predict(const andres::View<Feature>&, std::vector<Label>&) const;
+    void predict(const andres::View<Feature>&, std::vector<Label>&, const std::vector<bool>& = std::vector<bool>()) const;
     const DecisionNodeType& decisionNode(const size_t) const;
     void learn(const andres::View<Feature>&, const andres::View<Label>&,
-        std::vector<size_t>&);
+        const size_t, std::vector<size_t>&);
     template<class RandomEngine>
         void learn(const andres::View<Feature>&, const andres::View<Label>&,
-            std::vector<size_t>&, RandomEngine&);
+            const size_t, std::vector<size_t>&, RandomEngine&);
 
 private:
     struct TreeConstructionQueueEntry {
@@ -165,6 +165,7 @@ private:
     };
 
     std::vector<DecisionNodeType> decisionNodes_;
+    std::vector<size_t> oobSamples_;
 };
 
 /// A bag of decision trees.
@@ -186,10 +187,10 @@ public:
     const DecisionTreeType& decisionTree(const size_t) const;
     void predict(const andres::View<Feature>&, andres::Marray<Probability>&) const;
     void learn(const andres::View<Feature>&, const andres::View<Label>&,
-        const size_t = 255);
+        const size_t, const size_t = 255);
     template<class RandomEngine>
         void learn(const andres::View<Feature>&, const andres::View<Label>&,
-            const size_t, RandomEngine&);
+            const size_t, const size_t, RandomEngine&);
 
 private:
     template<class RandomEngine>
@@ -319,6 +320,7 @@ DecisionNode<FEATURE, LABEL>::label() {
 /// \param sampleIndices A sequence of indices of samples to be considered for learning. This vector is used by the function as a scratch-pad for sorting.
 /// \param sampleIndexBegin Index of the first element of sampleIndices to be considered.
 /// \param sampleIndexEnd Index one greater than that of the last element of sampleIndices to be considered.
+/// \param numberOfLabels total number of labels
 /// \param randomEngine C++11 STL-compliant random number generator.
 ///
 template<class FEATURE, class LABEL>
@@ -327,6 +329,7 @@ size_t
 DecisionNode<FEATURE, LABEL>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
+    const size_t numberOfLabels,
     std::vector<size_t>& sampleIndices, // input, will be sorted
     const size_t sampleIndexBegin,
     const size_t sampleIndexEnd,
@@ -384,8 +387,8 @@ DecisionNode<FEATURE, LABEL>::learn(
     );
 
     std::vector<size_t> numbersOfLabels[2];
-    numbersOfLabels[0].reserve(10); // expensive!
-    numbersOfLabels[1].reserve(10); // expensive!
+    numbersOfLabels[0] = std::vector<size_t>(numberOfLabels, 0); // expensive!
+    numbersOfLabels[1] = std::vector<size_t>(numberOfLabels, 0); // expensive!
     double optimalSumOfGiniCoefficients = std::numeric_limits<double>::infinity();
     size_t optimalFeatureIndex;
     size_t optimalThresholdIndex;
@@ -419,12 +422,6 @@ DecisionNode<FEATURE, LABEL>::learn(
         // numbers of labels
         for(size_t k = sampleIndexBegin; k < sampleIndexEnd; ++k) {
             const Label label = labels(sampleIndices[k]);
-            if(label >= numbersOfLabels[1].size()) {
-                const size_t newNumberOfLabels = label + 1;
-                for(size_t s = 0; s < 2; ++s) {
-                    numbersOfLabels[s].resize(newNumberOfLabels); // expensive!
-                }
-            }
             ++numbersOfLabels[1][label];
         }
 
@@ -560,6 +557,7 @@ DecisionTree<FEATURE, LABEL>::DecisionTree()
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample.
+/// \param numberOfLabels total number of labels
 /// \param sampleIndices A sequence of indices of samples to be considered for learning. This vector is used by the function as a scratch-pad for sorting.
 ///
 template<class FEATURE, class LABEL>
@@ -567,16 +565,18 @@ inline void
 DecisionTree<FEATURE, LABEL>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
+    const size_t numberOfLabels,
     std::vector<size_t>& sampleIndices // input, will be sorted
 ) {
     typedef std::default_random_engine RandomEngine;
-    learn<RandomEngine>(features, labels, sampleIndices, RandomEngine());
+    learn<RandomEngine>(features, labels, numberOfLabels, sampleIndices, RandomEngine());
 }
 
 /// Learns a decision tree as described by Leo Breiman (2001).
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample.
+/// \param numberOfLabels total number of labels
 /// \param sampleIndices A sequence of indices of samples to be considered for learning. This vector is used by the function as a scratch-pad for sorting.
 /// \param randomEngine C++11 STL-compliant random number generator.
 ///
@@ -586,11 +586,24 @@ void
 DecisionTree<FEATURE, LABEL>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
+    const size_t numberOfLabels,
     std::vector<size_t>& sampleIndices, // input, will be sorted
     RandomEngine& randomEngine
 ) {
     assert(decisionNodes_.size() == 0);
 
+    const size_t numberOfSamples = features.shape(0);
+
+    std::vector<bool> isOOB(numberOfSamples, true);
+    for (size_t sampleIndex = 0; sampleIndex < numberOfSamples; ++sampleIndex) {
+        isOOB[ sampleIndices[sampleIndex] ] = false;
+    }
+    
+    oobSamples_ = std::vector<size_t>();
+    for (size_t sampleIndex = 0; sampleIndex < numberOfSamples; ++sampleIndex) {
+        if (isOOB[sampleIndex]) oobSamples_.push_back(sampleIndex);
+    }
+    
     std::queue<TreeConstructionQueueEntry> queue;
     // learn root node
     {
@@ -598,6 +611,7 @@ DecisionTree<FEATURE, LABEL>::learn(
         size_t thresholdIndex = decisionNodes_.back().learn(
             features,
             labels,
+            numberOfLabels,
             sampleIndices,
             0, sampleIndices.size(),
             randomEngine
@@ -632,6 +646,7 @@ DecisionTree<FEATURE, LABEL>::learn(
             thresholdIndexNew = decisionNodes_.back().learn(
                 features,
                 labels,
+                numberOfLabels,
                 sampleIndices,
                 begin, end,
                 randomEngine
@@ -687,17 +702,20 @@ DecisionTree<FEATURE, LABEL>::decisionNode(
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample. (output)
+/// \param skip_sample An optional Boolean vector of samples to skip
 ///
 template<class FEATURE, class LABEL>
 inline void
 DecisionTree<FEATURE, LABEL>::predict(
     const andres::View<Feature>& features,
-    std::vector<Label>& labels
+    std::vector<Label>& labels,
+    const std::vector<bool>& skip_sample
 ) const  {
     const size_t numberOfSamples = features.shape(0);
     const size_t numberOfFeatures = features.shape(1);
     labels.resize(numberOfSamples);
     for(size_t j = 0; j < numberOfSamples; ++j) {
+        if (!skip_sample.empty() && skip_sample[j]) continue;
         size_t nodeIndex = 0;
         for(;;) {
             const DecisionNodeType& decisionNode = decisionNodes_[nodeIndex];
@@ -751,6 +769,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::size() const {
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample.
+/// \param numberOfLabels total number of labels
 /// \param numberOfDecisionTrees Number of decision trees to be learned.
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
@@ -758,11 +777,12 @@ inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
+    const size_t numberOfLabels,
     const size_t numberOfDecisionTrees
 ) {
     typedef std::default_random_engine RandomEngine;
     RandomEngine randomEngine;
-    learn<RandomEngine>(features, labels, numberOfDecisionTrees, randomEngine);
+    learn<RandomEngine>(features, labels, numberOfLabels, numberOfDecisionTrees, randomEngine);
 }
 
 /// Learns a decision forest from labeled samples as described by Breiman (2001).
@@ -770,6 +790,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample.
 /// \param numberOfDecisionTrees Number of decision trees to be learned.
+/// \param numberOfLabels Number of labels to be learned
 /// \param randomEngine C++11 STL-compatible random number generator.
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
@@ -779,6 +800,7 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
     const size_t numberOfDecisionTrees,
+    const size_t numberOfLabels,
     RandomEngine& randomEngine
 ) {
     if(features.dimension() != 2) {
@@ -794,12 +816,12 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
 
     clear();
     decisionTrees_.resize(numberOfDecisionTrees);
-
+    
     #pragma omp parallel for schedule(guided)
     for(ptrdiff_t treeIndex = 0; treeIndex < static_cast<ptrdiff_t>(decisionTrees_.size()); ++treeIndex) {
         std::vector<size_t> sampleIndices(numberOfSamples);
         sampleBootstrap(numberOfSamples, sampleIndices, randomEngine);
-        decisionTrees_[treeIndex].learn(features, labels, sampleIndices, randomEngine);
+        decisionTrees_[treeIndex].learn(features, labels, numberOfLabels, sampleIndices, randomEngine);
     }
 }
 
