@@ -63,10 +63,10 @@ int main() {
 
     // predict probabilities for every label and every training sample
     andres::Marray<Probability> probabilities(label_shape, label_shape + 2);
-    decisionForest.predict(features, probabilities);
+    decisionForest.predict(features, probabilities, false);
     // TODO: test formally
 
-    // printLiteral2D(probabilities, label_shape);
+//    printLiteral2D(probabilities, label_shape);
     
     const Probability reference[numberOfSamples][numberOfFeatures] = {{0.1,0.9},{0.8,0.2},{1,0},{0.9,0.1},{0.9,0.1},{0.1,0.9},{0.9,0.1},{0.8,0.2},{1,0},{0,1},{0.2,0.8},{0.4,0.6},{0.6,0.4},{0.4,0.6},{0.2,0.8},{0.9,0.1},{1,0},{0.7,0.3},{0,1},{1,0},{1,0},{1,0},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.2,0.8},{0.9,0.1},{0.9,0.1},{0.7,0.3},{0.4,0.6},{1,0},{0.3,0.7},{0.3,0.7},{0.9,0.1},{0.3,0.7},{0.3,0.7},{0.7,0.3},{0.7,0.3},{0.9,0.1},{0,1},{0.2,0.8},{0.8,0.2},{0.9,0.1},{0.7,0.3},{1,0},{0.1,0.9},{0,1},{0.7,0.3},{0.9,0.1},{1,0},{0.2,0.8},{0.9,0.1},{0.1,0.9},{0.7,0.3},{0.8,0.2},{0.1,0.9},{0.9,0.1},{1,0},{0.8,0.2},{0,1},{0.8,0.2},{0.9,0.1},{0.6,0.4},{0.8,0.2},{0.9,0.1},{0.3,0.7},{0.6,0.4},{0.2,0.8},{0.7,0.3},{0.3,0.7},{0.2,0.8},{0.8,0.2},{0.2,0.8},{0.1,0.9},{0.8,0.2},{0.7,0.3},{0.1,0.9},{0.1,0.9},{0.4,0.6},{0.1,0.9},{0.8,0.2},{0.2,0.8},{0.8,0.2},{0.7,0.3},{0.8,0.2},{0.4,0.6},{0.9,0.1},{0.2,0.8},{1,0},{0.2,0.8},{0.9,0.1},{0.8,0.2},{0.6,0.4},{0.1,0.9},{0.9,0.1},{0.9,0.1},{1,0},{0.2,0.8},{1,0}};
 
@@ -77,6 +77,11 @@ int main() {
     }
 
     
+    decisionForest.predict(features, probabilities, true);
+    // TODO: test formally
+
+    printLiteral2D(probabilities, label_shape);
+
     
     return 0;
 }

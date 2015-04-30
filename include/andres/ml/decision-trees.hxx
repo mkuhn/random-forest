@@ -136,8 +136,9 @@ public:
 
     DecisionTree();
     size_t size() const; // number of decision nodes
-    void predict(const andres::View<Feature>&, std::vector<Label>&, const std::vector<bool>& = std::vector<bool>()) const;
+    void predict(const andres::View<Feature>&, std::vector<Label>&, const bool) const;
     const DecisionNodeType& decisionNode(const size_t) const;
+    const std::vector<size_t>& oobSamples() const;
     void learn(const andres::View<Feature>&, const andres::View<Label>&,
         const size_t, std::vector<size_t>&);
     template<class RandomEngine>
@@ -185,7 +186,7 @@ public:
     void clear();
     size_t size() const;
     const DecisionTreeType& decisionTree(const size_t) const;
-    void predict(const andres::View<Feature>&, andres::Marray<Probability>&) const;
+    void predict(const andres::View<Feature>&, andres::Marray<Probability>&, const bool = false) const;
     void learn(const andres::View<Feature>&, const andres::View<Label>&,
         const size_t, const size_t = 255);
     template<class RandomEngine>
@@ -317,10 +318,10 @@ DecisionNode<FEATURE, LABEL>::label() {
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample.
+/// \param numberOfLabels total number of labels
 /// \param sampleIndices A sequence of indices of samples to be considered for learning. This vector is used by the function as a scratch-pad for sorting.
 /// \param sampleIndexBegin Index of the first element of sampleIndices to be considered.
 /// \param sampleIndexEnd Index one greater than that of the last element of sampleIndices to be considered.
-/// \param numberOfLabels total number of labels
 /// \param randomEngine C++11 STL-compliant random number generator.
 ///
 template<class FEATURE, class LABEL>
@@ -553,6 +554,18 @@ DecisionTree<FEATURE, LABEL>::DecisionTree()
 :   decisionNodes_()
 {}
 
+
+/// Getter for oobSamples
+///
+template<class FEATURE, class LABEL>
+inline const std::vector<size_t>&
+DecisionTree<FEATURE, LABEL>::oobSamples() const
+{
+    return oobSamples_;
+}
+
+
+
 /// Learns a decision tree as described by Leo Breiman (2001).
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
@@ -702,20 +715,23 @@ DecisionTree<FEATURE, LABEL>::decisionNode(
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labels A vector of labels, one for each sample. (output)
-/// \param skip_sample An optional Boolean vector of samples to skip
+/// \param check_oob_only Only compute results for OOB samples?
 ///
 template<class FEATURE, class LABEL>
 inline void
 DecisionTree<FEATURE, LABEL>::predict(
     const andres::View<Feature>& features,
     std::vector<Label>& labels,
-    const std::vector<bool>& skip_sample
+    const bool check_oob_only
 ) const  {
-    const size_t numberOfSamples = features.shape(0);
+    const size_t numberOfSamples = check_oob_only ? oobSamples_.size() : features.shape(0) ;
     const size_t numberOfFeatures = features.shape(1);
     labels.resize(numberOfSamples);
+    
     for(size_t j = 0; j < numberOfSamples; ++j) {
-        if (!skip_sample.empty() && skip_sample[j]) continue;
+    
+        const size_t sample_index = check_oob_only ? oobSamples_[j] : j;
+    
         size_t nodeIndex = 0;
         for(;;) {
             const DecisionNodeType& decisionNode = decisionNodes_[nodeIndex];
@@ -727,7 +743,7 @@ DecisionTree<FEATURE, LABEL>::predict(
                 const size_t fi = decisionNode.featureIndex();
                 const Feature threshold = decisionNode.threshold();
                 assert(fi < numberOfFeatures);
-                if(features(j, fi) < threshold) {
+                if(features(sample_index, fi) < threshold) {
                     nodeIndex = decisionNode.childNodeIndex(0);
                 }
                 else {
@@ -799,8 +815,8 @@ inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
     const andres::View<Feature>& features,
     const andres::View<Label>& labels,
-    const size_t numberOfDecisionTrees,
     const size_t numberOfLabels,
+    const size_t numberOfDecisionTrees,
     RandomEngine& randomEngine
 ) {
     if(features.dimension() != 2) {
@@ -829,12 +845,14 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::learn(
 ///
 /// \param features A matrix in which every rows corresponds to a sample and every column corresponds to a feature.
 /// \param labelProbabilities A matrix of probabilities in which every rows corresponds to a sample and every column corresponds to a label.
+/// \param check_oob_only Only consider out-of-bag examples?
 ///
 template<class FEATURE, class LABEL, class PROBABILITY>
 inline void
 DecisionForest<FEATURE, LABEL, PROBABILITY>::predict(
     const andres::View<Feature>& features,
-    andres::Marray<Probability>& labelProbabilities
+    andres::Marray<Probability>& labelProbabilities,
+    const bool check_oob_only
 ) const  {
     if(size() == 0) {
         throw std::runtime_error("no decision trees.");
@@ -847,24 +865,49 @@ DecisionForest<FEATURE, LABEL, PROBABILITY>::predict(
     }
 
     const size_t numberOfSamples = features.shape(0);
+    const size_t numberOfLabels = labelProbabilities.shape(1);
     std::fill(labelProbabilities.begin(), labelProbabilities.end(), Probability());
+    
+    std::vector<size_t> trees_per_sample;
+    if (check_oob_only) trees_per_sample = std::vector<size_t>(numberOfSamples, 0);
+    
     #pragma omp parallel for schedule(dynamic)
-    for(ptrdiff_t treeIndex = 0; treeIndex < static_cast<ptrdiff_t>(decisionTrees_.size()); ++treeIndex) {
+    for(ptrdiff_t treeIndex = 0; treeIndex < decisionTrees_.size(); ++treeIndex) {
         std::vector<Label> labels(numberOfSamples);
         const DecisionTreeType& decisionTree = decisionTrees_[treeIndex];
-        decisionTree.predict(features, labels);
-        for(size_t sampleIndex = 0; sampleIndex < numberOfSamples; ++sampleIndex) {
-            const Label label = labels[sampleIndex];
-            if(label >= labelProbabilities.shape(1)) {
-                throw std::runtime_error("labelProbabilities.shape(1) does not match the number of labels.");
+        decisionTree.predict(features, labels, check_oob_only);
+        
+        if (check_oob_only) {
+            const std::vector<size_t> oobSamples = decisionTree.oobSamples();
+            for(size_t oobSampleIndex = 0; oobSampleIndex < oobSamples.size(); ++oobSampleIndex) {
+                const Label label = labels[oobSampleIndex];
+                if(label >= numberOfSamples) {
+                    throw std::runtime_error("labelProbabilities.shape(1) does not match the number of labels.");
+                }
+                const size_t sampleIndex = oobSamples[oobSampleIndex];
+                #pragma omp atomic
+                ++labelProbabilities(sampleIndex, label);
+                ++trees_per_sample[sampleIndex];
             }
-            #pragma omp atomic
-            ++labelProbabilities(sampleIndex, label);
+        }
+        else
+        {
+            for(size_t sampleIndex = 0; sampleIndex < numberOfSamples; ++sampleIndex) {
+                const Label label = labels[sampleIndex];
+                if(label >= numberOfSamples) {
+                    throw std::runtime_error("labelProbabilities.shape(1) does not match the number of labels.");
+                }
+                #pragma omp atomic
+                ++labelProbabilities(sampleIndex, label);
+            }
         }
     }
     #pragma omp parallel for
-    for(ptrdiff_t j = 0; j < static_cast<ptrdiff_t>(labelProbabilities.size()); ++j) {
-        labelProbabilities(j) /= decisionTrees_.size();
+    for(size_t sampleIndex = 0; sampleIndex < numberOfSamples; ++sampleIndex) {
+        const size_t n = check_oob_only ? trees_per_sample[sampleIndex] : decisionTrees_.size();
+        for (size_t label = 0; label < numberOfLabels; ++label) {
+            labelProbabilities(sampleIndex, label) /= n;
+        }
     }
 }
 
